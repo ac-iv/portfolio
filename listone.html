@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>listone — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+/* Grid Layouts */
+.grid-1 { max-width: 85%; margin: 0 auto 2vw auto; } /* Constrains header image width */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; margin-bottom: 2vw; }
+
+/* Image Wrapper & Hover Descriptions */
+.img-wrapper { position: relative; width: 100%; display: block; overflow: hidden; border-radius: 12px; }
+.p-media img { width: 100%; display: block; transition: transform 0.3s ease; }
+
+/* Tooltip overlay styling */
+.img-wrapper::after {
+    content: attr(data-desc);
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(13, 13, 13, 0.85);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(4px);
+    z-index: 2;
+}
+
+/* Hover States */
+.img-wrapper:hover::after { opacity: 1; transform: translateY(0); }
+.img-wrapper:hover img { transform: scale(1.02); }
+
+@media (max-width: 600px) { 
+  .grid-1 { max-width: 100%; }
+  .grid-2 { grid-template-columns: 1fr; } 
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:3%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:28%;left:-16vmax;width:50vmax;--c:hsl(20 85% 83% / 0.4)"></div>
+  <div class="orb" style="top:55%;right:-12vmax;width:44vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:80%;left:-12vmax;width:46vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>005 — saas / marketplace tools</span><span>2024</span></div>
+  <h1>listone</h1>
+  <p class="p-sub">one listing, every marketplace</p>
+</header>
+
+<div class="p-body">
+  <aside class="p-info">
+    <p>listone was designed to solve a very specific frustration: having to manually post the same resale item across multiple marketplaces. the platform allows users to sign into their resale accounts in one place and publish a single listing that automatically syndicates across platforms.</p>
+    <p>the project focused on reducing redundant work for resellers by creating a centralized control layer. instead of jumping between apps, users manage titles, photos, prices, and shipping logic inside one streamlined interface.</p>
+    <div class="meta mono">
+      year — 2024<br>
+      role — product strategy, ui/ux, systems design<br>
+      category — saas / marketplace tools
+    </div>
+  </aside>
+
+  <div class="p-media">
+      <!-- Constrained Header Image -->
+      <div class="grid-1">
+          <div class="img-wrapper" data-desc="listone primary dashboard">
+              <img class="reveal" src="assets/img/listone.jpeg" alt="listone primary dashboard">
+          </div>
+      </div>
+      
+      <!-- Multi-Image Grid -->
+      <div class="grid-2">
+          <div class="img-wrapper" data-desc="listings manager view">
+              <img class="reveal" src="assets/img/listone2.jpeg" alt="listings manager view">
+          </div>
+          <div class="img-wrapper" data-desc="analytics performance metrics">
+              <img class="reveal" src="assets/img/listone3.jpeg" alt="analytics performance metrics">
+          </div>
+          <div class="img-wrapper" data-desc="marketplace account integration">
+              <img class="reveal" src="assets/img/listone5.jpeg" alt="marketplace account integration">
+          </div>
+          <div class="img-wrapper" data-desc="subscription models & pricing tiers">
+              <img class="reveal" src="assets/img/listone4.jpeg" alt="subscription models & pricing tiers">
+          </div>
+      </div>
+  </div>
+</div>
+
+<nav class="p-next">
+  <a href="ketchup.html"><span class="mono">← previous</span><span class="title">ketchup</span></a>
+  <a class="next" href="ymca.html"><span class="mono">next →</span><span class="title">ymca trophy case</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+</body>
+</html>

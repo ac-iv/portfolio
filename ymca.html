@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ymca trophy case — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+.walk{
+  max-width:1300px;margin:0 auto;padding:5vh 5vw;
+  display:grid;grid-template-columns:1fr 1.1fr;gap:6vw;align-items:center;
+}
+.walk.flip{grid-template-columns:1.1fr 1fr}
+.walk.flip .walk-text{order:2}
+.walk.flip .walk-img{order:1}
+.walk-text .mono{color:var(--grey);display:block;margin-bottom:14px}
+.walk-text h3{font-size:clamp(22px,2.6vw,34px);font-weight:500;letter-spacing:-0.025em;text-transform:lowercase;margin-bottom:16px}
+.walk-text p{font-size:15px;line-height:1.65;color:rgba(13,13,13,0.72);margin-bottom:1em}
+.walk-img img{width:100%;display:block;border-radius:20px;border:1px solid rgba(255,255,255,0.7);box-shadow:0 24px 70px rgba(0,0,0,0.12)}
+.gg-section{max-width:1300px;margin:0 auto;padding:9vh 5vw 3vh}
+.gg-section .kicker{color:var(--grey);display:block;margin-bottom:18px}
+.gg-section h2{font-size:clamp(26px,3.6vw,48px);font-weight:500;letter-spacing:-0.03em;line-height:1.15;text-transform:lowercase;max-width:22ch}
+.gg-section .body{margin-top:24px;max-width:680px;font-size:15.5px;line-height:1.65;color:rgba(13,13,13,0.75)}
+.gg-section .body p{margin-bottom:1.2em}
+.compare{max-width:1300px;margin:2vh auto;padding:0 5vw;display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.compare .card{background:rgba(255,255,255,0.6);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:22px;overflow:hidden;box-shadow:0 16px 50px rgba(0,0,0,0.07),0 1px 1px rgba(255,255,255,0.9) inset}
+.compare .card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.compare .card .card-body{padding:24px 26px 28px}
+.compare .card h4{font-size:17px;font-weight:500;letter-spacing:-0.01em;text-transform:lowercase;margin-bottom:10px}
+.compare .card p{font-size:14px;line-height:1.6;color:rgba(13,13,13,0.7)}
+.gg-band{max-width:1300px;margin:4vh auto;padding:0 5vw}
+.gg-band img{width:100%;display:block;border-radius:20px;border:1px solid rgba(255,255,255,0.7);box-shadow:0 30px 80px rgba(0,0,0,0.12)}
+@media (max-width:860px){
+  .walk,.walk.flip{grid-template-columns:1fr}
+  .walk.flip .walk-text{order:1}.walk.flip .walk-img{order:2}
+  .compare{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:3%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:22%;left:-16vmax;width:50vmax;--c:hsl(20 85% 83% / 0.4)"></div>
+  <div class="orb" style="top:48%;right:-12vmax;width:44vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:72%;left:-12vmax;width:46vmax;--c:hsl(150 40% 80% / 0.38)"></div>
+  <div class="orb" style="top:92%;right:8%;width:42vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>006 — architecture / industrial design</span><span>2024</span></div>
+  <h1>ymca trophy case design</h1>
+  <p class="p-sub">celebrating a community's accomplishments in built form</p>
+</header>
+
+<div class="p-body">
+  <aside class="p-info">
+    <p>the ymca trophy case project celebrates the accomplishments of the ymca community by creating a modern, functional display system. the design focuses on clean lines, durable materials, and a versatile layout that showcases awards and memorabilia while elevating the overall aesthetic of the facility.</p>
+    <p>the project covers <strong>two distinct sites</strong> within the ymca — the locker area and the main lobby — each with its own spatial constraints, foot traffic patterns, and display needs. both were designed from real-world measurements, not assumptions.</p>
+    <div class="meta mono">
+      year — 2024<br>
+      role — design, 3d scanning, sketchup modeling, fabrication drawings<br>
+      category — architecture / industrial design<br>
+      tools — handheld lidar, sketchup, rendering
+    </div>
+    <a class="btn-dark" href="assets/pdfs/YMCA%20Presentation.pdf" target="_blank">view full presentation (pdf) <span>↗</span></a>
+  </aside>
+  <div class="p-media">
+    <img class="reveal" src="assets/img/locker-F3.png" alt="locker trophy case final render">
+    <div class="caption">locker area — final render</div>
+    <img class="reveal" src="assets/img/Lobby-F3.png" alt="lobby trophy case final render">
+    <div class="caption">lobby — final render</div>
+  </div>
+</div>
+
+<!-- process: scanning -->
+<section class="gg-section reveal">
+  <span class="kicker mono">process — data collection</span>
+  <h2>site visits, lidar scanning, and sketchup conversion</h2>
+  <div class="body">
+    <p>both sites began the same way: on-site visits with a handheld lidar scanner to capture exact dimensions, architectural details, and spatial relationships. the raw scan data was then converted into clean sketchup models, giving us a precise digital twin of each space to design within — no guesswork, no tape-measure approximations.</p>
+    <p>this approach meant the final designs could be evaluated against real sightlines, foot traffic, and structural constraints from day one, rather than discovering fit problems during fabrication.</p>
+  </div>
+</section>
+
+<div class="walk reveal">
+  <div class="walk-text">
+    <span class="mono">site 1 — locker area</span>
+    <h3>fitting a display into a space people pass through</h3>
+    <p>the locker area is a high-traffic, utilitarian corridor — people are moving, not lingering. the trophy case needed to be visible and compelling without creating a bottleneck or feeling out of place next to gym infrastructure.</p>
+    <p>the lidar scan revealed the exact wall geometry, clearances from lockers, and overhead obstructions. the final design sits flush with the architectural rhythm of the space — prominent enough to celebrate the community's accomplishments, restrained enough to respect the corridor's function.</p>
+  </div>
+  <div class="walk-img"><img src="assets/img/locker2.jpeg" alt="lidar scan of the locker area"></div>
+</div>
+
+<div class="walk flip reveal">
+  <div class="walk-text">
+    <span class="mono">site 2 — lobby</span>
+    <h3>an arrival moment that sets the tone</h3>
+    <p>the lobby is the ymca's front door — the first thing members and visitors see. the display here carries more ceremonial weight: it needs to feel welcoming, make people proud, and hold the community's story at eye level.</p>
+    <p>the lidar capture mapped the full entryway, including sightlines from the main doors, reception desk relationship, and available wall depth. the design places the case where it commands attention naturally without competing with wayfinding or creating visual clutter at arrival.</p>
+  </div>
+  <div class="walk-img"><img src="assets/img/lobby1.jpeg" alt="lidar scan of the lobby area"></div>
+</div>
+
+<!-- design comparison -->
+<section class="gg-section reveal">
+  <span class="kicker mono">final designs</span>
+  <h2>two sites, two approaches — one design language</h2>
+  <div class="body">
+    <p>the two trophy cases take distinct but complementary approaches, reflecting the different needs of each location while sharing a unified material palette and design vocabulary.</p>
+  </div>
+</section>
+
+<div class="compare reveal">
+  <div class="card">
+    <img src="assets/img/locker-F1.png" alt="locker case — elegance approach">
+    <div class="card-body">
+      <h4>locker — visual impact</h4>
+      <p>prioritizes elegance and striking presence. premium materials create a centerpiece that rewards a glance in passing — designed for the speed of the corridor.</p>
+    </div>
+  </div>
+  <div class="card">
+    <img src="assets/img/Lobby-F2.png" alt="lobby case — functional approach">
+    <div class="card-body">
+      <h4>lobby — functionality & adaptability</h4>
+      <p>emphasizes versatile display and ease of use. maximizes storage capacity while maintaining polish — designed for the ceremony of arrival.</p>
+    </div>
+  </div>
+</div>
+
+<!-- iteration gallery -->
+<section class="gg-section reveal" style="padding-bottom:0">
+  <span class="kicker mono">iteration</span>
+  <h2>the renders that got us there</h2>
+  <div class="body">
+    <p>each site went through multiple render iterations — testing material finishes, proportions, shelf spacing, and lighting responses before arriving at the final designs.</p>
+  </div>
+</section>
+
+<div style="max-width:1300px;margin:4vh auto;padding:0 5vw">
+  <div class="p-media">
+    <div class="grid-2">
+      <img class="reveal" src="assets/img/locker-F2.png" alt="locker iteration 2">
+      <img class="reveal" src="assets/img/locker-F3.png" alt="locker iteration 3">
+    </div>
+    <div class="grid-2">
+      <img class="reveal" src="assets/img/Lobby-F2.png" alt="lobby iteration 2">
+      <img class="reveal" src="assets/img/Lobby-F3.png" alt="lobby iteration 3">
+    </div>
+  </div>
+</div>
+
+<div class="gg-band reveal">
+  <img src="assets/img/ymca2.png" alt="ymca overview render">
+</div>
+
+<div style="max-width:1300px;margin:4vh auto 8vh;padding:0 5vw">
+  <div class="p-media">
+    <img class="reveal" src="assets/img/locker-11.png" alt="locker area full context render">
+    <div class="caption">locker area — full context render</div>
+  </div>
+</div>
+
+<nav class="p-next">
+  <a href="listone.html"><span class="mono">← previous</span><span class="title">listone</span></a>
+  <a class="next" href="pigeon.html"><span class="mono">next →</span><span class="title">berkeley pigeon project</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+</body>
+</html>

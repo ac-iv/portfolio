@@ -1,0 +1,191 @@
+/* ── avelino cortina — project page theme ── */
+:root{
+  --black:#0d0d0d;
+  --white:#ffffff;
+  --grey:#8a8a8a;
+  --line:rgba(13,13,13,0.12);
+  --glass:rgba(255,255,255,0.5);
+  --glass-border:rgba(255,255,255,0.65);
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --hue:340;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Archivo',sans-serif;
+  color:var(--black);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  background:#fff;
+}
+::selection{background:var(--black);color:var(--white)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:lowercase}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+
+/* orbs — soft lights anchored to the page itself.
+   you scroll past them; nothing moves or fades. */
+.bubbles{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.orb{
+  position:absolute;border-radius:50%;
+  aspect-ratio:1;
+  background:radial-gradient(circle, var(--c), transparent 62%);
+}
+.grain{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.45;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* glass nav */
+nav.pill{
+  position:fixed;top:20px;left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  display:flex;align-items:center;gap:4px;
+  padding:6px;border-radius:100px;
+  white-space:nowrap;
+  max-width:calc(100vw - 32px);
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid var(--glass-border);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 -1px 1px rgba(0,0,0,0.04) inset,
+    0 8px 32px rgba(0,0,0,0.08),
+    0 2px 8px rgba(0,0,0,0.04);
+  transition:transform 0.6s var(--ease);
+}
+nav.pill .back{
+  font-size:clamp(10.5px,1.6vw,12.5px);font-weight:500;
+  padding:8px clamp(8px,1.2vw,14px);border-radius:100px;
+  color:rgba(13,13,13,0.6);
+  transition:color 0.25s ease, background 0.25s ease;
+}
+nav.pill .back:hover{color:var(--black);background:rgba(13,13,13,0.05)}
+nav.pill .logo{
+  font-weight:600;font-size:clamp(11px,1.6vw,13px);letter-spacing:-0.01em;
+  padding:8px clamp(8px,1.2vw,14px);
+  display:flex;align-items:center;gap:9px;
+}
+nav.pill .logo .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff, hsl(var(--hue) 70% 78%));
+  box-shadow:0 0 10px 2px hsl(var(--hue) 80% 75% / 0.8);
+}
+nav.pill .cta{
+  font-size:clamp(10.5px,1.6vw,12.5px);font-weight:500;
+  padding:8px clamp(10px,1.4vw,16px);border-radius:100px;
+  background:var(--black);color:var(--white);
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+nav.pill .cta:hover{transform:scale(1.04);box-shadow:0 0 24px hsl(var(--hue) 75% 75% / 0.6)}
+
+/* page header */
+.p-head{
+  padding:22vh 5vw 6vh;
+  max-width:1300px;margin:0 auto;
+}
+.p-head .crumb{color:var(--grey);margin-bottom:24px;display:flex;justify-content:space-between}
+.p-head h1{
+  font-size:clamp(38px,6.5vw,92px);
+  font-weight:500;letter-spacing:-0.04em;line-height:1.02;
+  text-transform:lowercase;
+  max-width:18ch;
+}
+.p-head .p-sub{
+  margin-top:18px;
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:clamp(18px,2.2vw,26px);
+  color:var(--grey);
+}
+
+/* body: sticky info + media */
+.p-body{
+  display:grid;grid-template-columns:minmax(320px,440px) 1fr;
+  gap:6vw;
+  padding:4vh 5vw 10vh;
+  max-width:1300px;margin:0 auto;
+  align-items:start;
+}
+.p-info{position:sticky;top:120px}
+.p-info p{
+  font-size:15.5px;line-height:1.65;
+  color:rgba(13,13,13,0.75);
+  margin-bottom:1.3em;
+}
+.p-info strong{color:var(--black)}
+.p-info .meta{
+  margin-top:36px;padding-top:24px;
+  border-top:1px solid var(--line);
+  color:var(--grey);line-height:2;
+}
+.btn-dark{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:28px;
+  font-size:13px;font-weight:500;
+  padding:12px 20px;border-radius:100px;
+  background:var(--black);color:var(--white);
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.btn-dark:hover{transform:scale(1.04);box-shadow:0 0 28px hsl(var(--hue) 75% 75% / 0.6)}
+
+.p-media{display:flex;flex-direction:column;gap:22px}
+.p-media img,.p-media video{
+  width:100%;display:block;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 20px 60px rgba(0,0,0,0.1);
+}
+.p-media .caption{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.08em;
+  color:var(--grey);text-align:center;
+  margin:-12px 0 6px;
+  text-transform:lowercase;
+}
+.p-media .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.p-media .grid-2 img{height:100%;object-fit:cover}
+
+/* prev / next */
+.p-next{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--line);
+  max-width:1300px;margin:0 auto;
+}
+.p-next a{
+  padding:44px 5vw;
+  display:flex;flex-direction:column;gap:10px;
+  transition:background 0.3s ease;
+}
+.p-next a:hover{background:rgba(13,13,13,0.03)}
+.p-next a.next{text-align:right;border-left:1px solid var(--line)}
+.p-next .mono{color:var(--grey)}
+.p-next .title{
+  font-size:clamp(18px,2.4vw,28px);
+  font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;
+}
+
+footer{
+  display:flex;justify-content:space-between;
+  padding:28px 5vw;color:var(--grey);
+  border-top:1px solid var(--line);
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  .p-body{grid-template-columns:1fr;gap:5vh}
+  .p-info{position:relative;top:unset}
+  .p-head{padding-top:18vh}
+}
+@media (max-width:600px){
+  .p-media .grid-2{grid-template-columns:1fr}
+  nav.pill .logo{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}

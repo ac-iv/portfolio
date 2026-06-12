@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>the holy bible of homosexuality — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+.zine-stage{
+  position:relative;
+  margin:4vh 16px 8vh;
+  height:85svh;
+  overflow:hidden;
+  background:#0d0d0d;
+  border-radius:32px;
+}
+.zine-stage::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(120% 80% at 50% 110%, hsl(var(--hue) 60% 60% / 0.12), transparent 55%);
+}
+.zine-strip{
+  position:absolute;
+  top:50%;left:0;
+  transform:translateY(-50%);
+  display:flex;gap:32px;
+  will-change:transform;
+}
+.zine-strip canvas{
+  height:70svh;width:auto;
+  background:#000;
+  border-radius:8px;
+  box-shadow:0 18px 50px rgba(0,0,0,0.5);
+}
+.hint{
+  position:absolute;
+  bottom:22px;left:50%;
+  transform:translateX(-50%);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:0.25em;
+  color:rgba(255,255,255,0.4);
+  text-transform:lowercase;
+  pointer-events:none;z-index:3;
+}
+@media (max-width:760px){
+  .zine-strip canvas{height:58svh}
+  .zine-stage{margin:3vh 10px 6vh}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:4%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:38%;left:-16vmax;width:50vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:70%;right:-10vmax;width:44vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+  <div class="orb" style="top:94%;left:6%;width:40vmax;--c:hsl(275 50% 84% / 0.4)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>archive — zine</span><span>2025</span></div>
+  <h1>the holy bible of homosexuality</h1>
+  <p class="p-sub">a continuous object, not a book</p>
+</header>
+
+<div class="p-body" style="padding-bottom:2vh">
+  <aside class="p-info" style="position:relative;top:unset;max-width:680px">
+    <p>a printed zine reimagining religious aesthetics through queerness, repression, beauty, and survival. meant to be passed through rather than read linearly — move your cursor left and right to drift through the pages. part of <a href="mirroredconfessional.html" style="text-decoration:underline">the mirrored confessional</a>.</p>
+  </aside>
+</div>
+
+<section class="zine-stage">
+  <div class="zine-strip" id="strip"></div>
+  <div class="hint">move left / right</div>
+</section>
+
+<nav class="p-next">
+  <a href="index.html"><span class="mono">← back</span><span class="title">index</span></a>
+  <a class="next" href="mirroredconfessional.html"><span class="mono">full project →</span><span class="title">the mirrored confessional</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const PDF_PATH = "assets/pdf/bible.pdf";
+const strip = document.getElementById("strip");
+
+let pages = [];
+let totalPages = 0;
+let scrollX = 0;
+let velocity = 0;
+let setWidth = 0;
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+async function init() {
+  const pdf = await pdfjsLib.getDocument(PDF_PATH).promise;
+  totalPages = pdf.numPages;
+  for (let i = 1; i <= totalPages; i++) {
+    const page = await pdf.getPage(i);
+    const vp = page.getViewport({ scale: 1.4 });
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = vp.width;
+    canvas.height = vp.height;
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    pages.push(canvas);
+  }
+  buildStrip();
+}
+
+function buildStrip() {
+  strip.innerHTML = "";
+  for (let c = 0; c < 3; c++) {
+    for (const page of pages) {
+      const clone = page.cloneNode(true);
+      clone.getContext("2d").drawImage(page, 0, 0);
+      strip.appendChild(clone);
+    }
+  }
+  requestAnimationFrame(() => {
+    measureWidth();
+    scrollX = setWidth;
+    animate();
+  });
+}
+
+function measureWidth() {
+  setWidth = 0;
+  for (let i = 0; i < totalPages; i++) {
+    setWidth += strip.children[i].getBoundingClientRect().width + 32;
+  }
+}
+
+document.addEventListener("mousemove", e => {
+  const center = window.innerWidth / 2;
+  velocity = ((e.clientX - center) / center) * 30;
+});
+// touch drag for mobile
+let touchX = null;
+document.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; velocity = 0; }, {passive:true});
+document.addEventListener("touchmove", e => {
+  if (touchX === null) return;
+  const dx = touchX - e.touches[0].clientX;
+  scrollX += dx;
+  touchX = e.touches[0].clientX;
+}, {passive:true});
+document.addEventListener("touchend", () => { touchX = null; });
+
+function wrap() {
+  if (scrollX >= setWidth * 2) scrollX -= setWidth;
+  if (scrollX <= 0) scrollX += setWidth;
+}
+
+function animate() {
+  scrollX += velocity * 0.18;
+  wrap();
+  strip.style.transform = `translate(${-scrollX}px, -50%)`;
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener("resize", measureWidth);
+init();
+</script>
+</body>
+</html>

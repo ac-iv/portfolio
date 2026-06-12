@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>avelino cortina — design & product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0d0d0d;
+  --white:#ffffff;
+  --grey:#8a8a8a;
+  --line:rgba(13,13,13,0.12);
+  --glass:rgba(255,255,255,0.5);
+  --glass-border:rgba(255,255,255,0.65);
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --hue:340; /* starts pink, drifts as you scroll */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Archivo',sans-serif;
+  color:var(--black);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  background:#ffffff;
+}
+::selection{background:var(--black);color:var(--white)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:lowercase}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+
+/* ---------- orbs — soft lights anchored to the page ----------
+   randomly scattered down the document. nothing moves or fades;
+   you simply scroll past them. colors run the muted spectrum
+   top to bottom. edit positions/colors inline in the markup. */
+.bubbles{position:absolute;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.orb{
+  position:absolute;border-radius:50%;
+  aspect-ratio:1;
+  background:radial-gradient(circle, var(--c), transparent 62%);
+}
+
+.grain{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.45;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- liquid glass nav ---------- */
+nav.pill{
+  position:fixed;
+  top:20px;left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  display:flex;align-items:center;gap:4px;
+  padding:6px;
+  border-radius:100px;
+  white-space:nowrap;
+  max-width:calc(100vw - 32px);
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid var(--glass-border);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 -1px 1px rgba(0,0,0,0.04) inset,
+    0 8px 32px rgba(0,0,0,0.08),
+    0 2px 8px rgba(0,0,0,0.04);
+  transition:transform 0.6s var(--ease);
+}
+
+nav.pill .logo{
+  font-weight:600;font-size:clamp(11px,1.8vw,14.5px);letter-spacing:-0.01em;
+  padding:8px clamp(8px,1.4vw,16px) 8px clamp(8px,1.2vw,14px);
+  display:flex;align-items:center;gap:9px;
+}
+nav.pill .logo .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff, hsl(var(--hue) 70% 78%));
+  box-shadow:0 0 10px 2px hsl(var(--hue) 80% 75% / 0.8);
+}
+nav.pill .links{display:flex;gap:2px}
+nav.pill .links a{
+  font-size:clamp(11px,1.6vw,13.5px);font-weight:500;
+  padding:8px clamp(8px,1.2vw,14px);border-radius:100px;
+  color:rgba(13,13,13,0.6);
+  transition:color 0.25s ease, background 0.25s ease;
+}
+nav.pill .links a:hover{color:var(--black);background:rgba(13,13,13,0.05)}
+nav.pill .cta{
+  font-size:clamp(10.5px,1.6vw,13.5px);font-weight:500;
+  padding:8px clamp(10px,1.4vw,16px);border-radius:100px;
+  background:var(--black);color:var(--white);
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+nav.pill .cta:hover{transform:scale(1.04);box-shadow:0 0 24px hsl(var(--hue) 75% 75% / 0.6)}
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:88svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:16vh 5vw 4vh;
+  position:relative;
+}
+.hero .meta-row{
+  display:flex;justify-content:space-between;
+  color:var(--grey);
+  margin-bottom:4vh;
+  opacity:0;animation:rise 1s var(--ease) 0.2s forwards;
+}
+.hero h1{
+  font-size:clamp(44px,9.5vw,150px);
+  font-weight:500;
+  letter-spacing:-0.045em;
+  line-height:0.98;
+  opacity:0;animation:rise 1.2s var(--ease) 0.35s forwards;
+  text-transform:lowercase;
+}
+.hero h1 .serif{letter-spacing:-0.02em;color:rgba(13,13,13,0.55)}
+.hero .sub{
+  margin-top:5vh;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:40px;flex-wrap:wrap;
+  opacity:0;animation:rise 1.2s var(--ease) 0.55s forwards;
+}
+.hero .sub p{
+  max-width:560px;font-size:16px;line-height:1.55;
+  color:rgba(13,13,13,0.7);
+}
+.scroll-hint{display:flex;align-items:center;gap:10px;color:var(--grey)}
+.scroll-hint .bar{
+  width:48px;height:1px;background:var(--line);
+  position:relative;overflow:hidden;
+}
+.scroll-hint .bar::after{
+  content:'';position:absolute;inset:0;
+  background:var(--black);
+  transform:translateX(-100%);
+  animation:slide 2.4s var(--ease) infinite;
+}
+@keyframes slide{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+@keyframes breathe{
+  0%,100%{transform:scale(1);opacity:0.9}
+  50%{transform:scale(1.08);opacity:1}
+}
+
+/* hero tagline */
+.hero .tagline{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  font-size:clamp(19px,2.6vw,32px);
+  color:rgba(13,13,13,0.55);
+  margin-top:20px;
+  letter-spacing:-0.01em;
+  opacity:0;animation:rise 1.2s var(--ease) 0.45s forwards;
+}
+
+/* ---------- section scaffolding ---------- */
+section{padding:13vh 5vw}
+.section-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--line);
+  padding-bottom:20px;
+}
+.section-head h2{
+  font-size:clamp(28px,4vw,52px);
+  font-weight:500;letter-spacing:-0.03em;
+  text-transform:lowercase;
+}
+.section-head .mono{color:var(--grey)}
+
+/* ---------- featured: good graces ---------- */
+.featured{
+  display:grid;
+  grid-template-columns:1fr 1.05fr;
+
+  width:100%;
+  max-width:1200px;   /* controls overall card width */
+  margin:44px auto 0; /* centers the card */
+
+  border-radius:28px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.6);
+  -webkit-backdrop-filter:blur(26px) saturate(170%);
+  backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid rgba(255,255,255,0.85);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 30px 80px rgba(0,0,0,0.1),
+    0 0 70px hsl(18 80% 80% / 0.3);
+  transition:transform 0.5s var(--ease), box-shadow 0.5s ease;
+}
+.featured:hover{
+  transform:translateY(-4px);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 40px 100px rgba(0,0,0,0.13),
+    0 0 90px hsl(18 85% 78% / 0.45);
+}
+.featured .f-info{
+  padding:clamp(28px,4vw,54px);
+  display:flex;flex-direction:column;justify-content:center;gap:18px;
+}
+.featured .badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.08em;
+  text-transform:lowercase;color:rgba(13,13,13,0.7);
+  padding:6px 13px;border-radius:100px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.5);
+  width:fit-content;
+}
+.featured .badge::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:#E8614A;
+  box-shadow:0 0 10px 2px rgba(232,97,74,0.7);
+  animation:pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot{50%{opacity:0.4}}
+.featured h3{
+  font-size:clamp(30px,4vw,52px);
+  font-weight:500;letter-spacing:-0.035em;line-height:1;
+  text-transform:lowercase;
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+}
+.featured h3 em{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  color:var(--grey);font-size:0.5em;
+}
+.featured .f-info p{
+  font-size:15px;line-height:1.6;color:rgba(13,13,13,0.72);
+  max-width:46ch;
+}
+.featured .f-tags{display:flex;gap:8px;flex-wrap:wrap}
+.featured .f-cta{
+  margin-top:6px;
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13.5px;font-weight:500;
+  width:fit-content;
+  padding:12px 22px;border-radius:100px;
+  background:var(--black);color:var(--white);
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.featured:hover .f-cta{transform:scale(1.04);box-shadow:0 0 26px rgba(232,97,74,0.5)}
+.featured .f-img{
+  background:#F6F0E6;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  min-height:340px;
+}
+.featured .f-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+}
+.featured:hover .f-img img{transform:scale(1.03)}
+@media (max-width:860px){
+  .featured{grid-template-columns:1fr}
+  .featured .f-img{min-height:260px;order:-1}
+}
+
+/* ---------- highlighted projects ---------- */
+.hl-label{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:64px;padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.hl-label .mono{color:var(--grey)}
+.hl-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:22px;
+  margin-top:26px;
+}
+.hl-card{
+  display:flex;flex-direction:column;
+  border-radius:22px;overflow:hidden;
+  background:rgba(255,255,255,0.6);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  backdrop-filter:blur(22px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.85);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 18px 50px rgba(0,0,0,0.08);
+  transition:transform 0.45s var(--ease), box-shadow 0.45s ease;
+}
+.hl-card:hover{
+  transform:translateY(-5px);
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 30px 70px rgba(0,0,0,0.12),
+    0 0 50px hsl(var(--hue) 75% 80% / 0.4);
+}
+.hl-card .hl-img{
+  aspect-ratio:4/3;overflow:hidden;background:#ececea;
+}
+.hl-card .hl-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.8s var(--ease);
+}
+.hl-card:hover .hl-img img{transform:scale(1.04)}
+.hl-card .hl-body{
+  padding:20px 22px 24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.hl-card h4{
+  font-size:18px;font-weight:500;letter-spacing:-0.015em;
+  text-transform:lowercase;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.hl-card h4 span{
+  font-size:14px;
+  transition:transform 0.35s var(--ease);
+}
+.hl-card:hover h4 span{transform:translate(3px,-3px)}
+.hl-card .hl-tags{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;
+  color:var(--grey);text-transform:lowercase;line-height:1.6;
+}
+
+/* ---------- work index ---------- */
+.work{padding-top:6vh}
+.project{
+  display:grid;
+  grid-template-columns:64px 1fr auto auto;
+  align-items:center;gap:32px;
+  padding:30px 8px;
+  border-bottom:1px solid var(--line);
+  cursor:pointer;
+  transition:padding 0.4s var(--ease);
+}
+.project:hover{padding-left:20px}
+.project .idx{color:var(--grey)}
+.project .name{
+  font-size:clamp(20px,2.6vw,34px);
+  font-weight:500;letter-spacing:-0.025em;
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  text-transform:lowercase;
+}
+.project .name em{
+  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
+  color:var(--grey);font-size:0.62em;
+}
+.project .tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.project .tag{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;
+  padding:5px 11px;border:1px solid var(--line);border-radius:100px;
+  color:rgba(13,13,13,0.65);
+  background:rgba(255,255,255,0.4);
+  transition:border-color 0.3s ease;
+  text-transform:lowercase;
+}
+.project:hover .tag{border-color:rgba(13,13,13,0.35)}
+.project .arrow{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);
+  display:grid;place-items:center;
+  font-size:15px;
+  transition:all 0.35s var(--ease);
+}
+.project:hover .arrow{
+  background:var(--black);color:var(--white);border-color:var(--black);
+  transform:rotate(45deg);
+  box-shadow:0 0 20px hsl(var(--hue) 75% 75% / 0.7);
+}
+
+/* cursor-following glass preview */
+#preview{
+  position:fixed;z-index:90;
+  width:320px;aspect-ratio:4/3;
+  border-radius:18px;
+  pointer-events:none;
+  opacity:0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 30px 80px rgba(0,0,0,0.25), 0 1px 1px rgba(255,255,255,0.8) inset;
+  transition:opacity 0.3s ease;
+  background:#ececea;
+}
+#preview.on{opacity:1}
+#preview img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 0.25s ease;
+}
+#preview img.on{opacity:1}
+
+/* ---------- archive ---------- */
+.archive{padding-top:4vh}
+.archive-row{
+  width:100%;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 8px;
+  border-bottom:1px solid var(--line);
+  color:rgba(13,13,13,0.75);
+  transition:color 0.25s ease, padding 0.35s var(--ease);
+  text-transform:lowercase;
+  font-size:15.5px;font-weight:500;letter-spacing:-0.01em;
+  font-family:'Archivo',sans-serif;
+}
+.archive-row:hover{color:var(--black);padding-left:18px}
+.archive-row .mono{color:var(--grey)}
+
+/* ---------- archive modals — glass popups ---------- */
+.overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(255,255,255,0.35);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  backdrop-filter:blur(20px) saturate(160%);
+  display:grid;place-items:center;
+  padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+.overlay.open{opacity:1;pointer-events:auto}
+.modal{
+  display:none;
+  width:min(560px,94vw);
+  max-height:88svh;overflow-y:auto;
+  background:rgba(255,255,255,0.78);
+  -webkit-backdrop-filter:blur(30px);
+  backdrop-filter:blur(30px);
+  border:1px solid rgba(255,255,255,0.85);
+  border-radius:26px;
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.9) inset,
+    0 40px 100px rgba(0,0,0,0.22),
+    0 0 80px hsl(var(--hue) 75% 80% / 0.35);
+  transform:translateY(26px) scale(0.96);
+  transition:transform 0.5s var(--ease);
+  overflow-x:hidden;
+}
+.overlay.open .modal.active{display:block;transform:none}
+.modal img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.modal .body{padding:26px 30px 32px}
+.modal .body .mono{color:var(--grey);display:block;margin-bottom:10px}
+.modal h3{
+  font-size:24px;font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;margin-bottom:12px;
+}
+.modal p{font-size:14.5px;line-height:1.6;color:rgba(13,13,13,0.7);margin-bottom:18px}
+.modal .actions{display:flex;gap:12px;align-items:center}
+.modal .link{
+  font-size:13px;font-weight:500;
+  padding:10px 18px;border-radius:100px;
+  background:var(--black);color:var(--white);
+  display:inline-flex;gap:8px;align-items:center;
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.modal .link:hover{transform:scale(1.04);box-shadow:0 0 24px hsl(var(--hue) 75% 75% / 0.6)}
+.modal-close{
+  position:absolute;top:18px;right:18px;
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,0.7);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.9);
+  font-size:16px;display:grid;place-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.12);
+  transition:transform 0.3s var(--ease);
+  z-index:210;
+}
+.modal-close:hover{transform:rotate(90deg)}
+
+/* ---------- marquee ---------- */
+.marquee-wrap{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:24px 0;overflow:hidden;white-space:nowrap;
+}
+.marquee{display:inline-flex;gap:56px;animation:marquee 28s linear infinite}
+.marquee span{
+  font-size:clamp(15px,1.8vw,20px);font-weight:500;letter-spacing:-0.01em;
+  color:rgba(13,13,13,0.8);
+  display:flex;align-items:center;gap:56px;
+  text-transform:lowercase;
+}
+.marquee span::after{content:'✦';font-size:11px;color:var(--grey)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- about (dark) ---------- */
+.about{
+  background:var(--black);color:var(--white);
+  border-radius:32px;
+  margin:10vh 16px;
+  padding:13vh 6vw;
+  position:relative;overflow:hidden;
+}
+.about::before{
+  content:'';position:absolute;
+  top:-25%;right:-12%;width:55%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle, hsl(var(--hue) 70% 70% / 0.16), transparent 65%);
+  filter:blur(40px);
+}
+.about .mono{color:rgba(255,255,255,0.4)}
+.about .grid{
+  display:grid;grid-template-columns:1fr 280px;gap:60px;align-items:start;
+  margin-top:30px;position:relative;
+}
+.about h3{
+  font-size:clamp(24px,3.2vw,44px);
+  font-weight:400;letter-spacing:-0.025em;line-height:1.28;
+  text-transform:lowercase;
+}
+.about h3 .serif{color:rgba(255,255,255,0.55)}
+.about .photo{
+  width:100%;aspect-ratio:3/4;border-radius:18px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.15);
+}
+.about .photo img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(100%);transition:filter 0.6s ease}
+.about .photo:hover img{filter:grayscale(0%)}
+.about .cols{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:40px;
+  margin-top:9vh;padding-top:6vh;
+  border-top:1px solid rgba(255,255,255,0.12);
+  position:relative;
+}
+.about .col .mono{display:block;margin-bottom:16px}
+.about .col p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.65)}
+
+/* ---------- contact ---------- */
+.contact{
+  min-height:80svh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;gap:36px;
+  position:relative;
+}
+.contact .halo{
+  position:absolute;top:50%;left:50%;
+  width:min(70vw,720px);aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle, hsl(var(--hue) 80% 84% / 0.4), transparent 65%);
+  filter:blur(30px);
+  pointer-events:none;z-index:-1;
+  animation:breathe 8s ease-in-out infinite;
+}
+.contact h2{
+  font-size:clamp(44px,9vw,130px);
+  font-weight:500;letter-spacing:-0.045em;line-height:1;
+  text-transform:lowercase;
+}
+.contact h2 .serif{
+  background:linear-gradient(100deg,
+    hsl(0 35% 45%), hsl(40 40% 45%), hsl(140 25% 42%),
+    hsl(210 35% 45%), hsl(280 25% 48%));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.btn-glass{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 30px;border-radius:100px;
+  font-size:14px;font-weight:500;
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(13,13,13,0.15);
+  box-shadow:0 1px 1px rgba(255,255,255,0.9) inset, 0 10px 30px rgba(0,0,0,0.08);
+  transition:transform 0.35s var(--ease), box-shadow 0.35s ease;
+}
+.btn-glass:hover{
+  transform:translateY(-3px);
+  box-shadow:0 1px 1px rgba(255,255,255,0.9) inset, 0 18px 44px rgba(0,0,0,0.1), 0 0 40px hsl(var(--hue) 80% 78% / 0.6);
+}
+.contact .socials{display:flex;gap:24px;color:var(--grey)}
+.contact .socials a{transition:color 0.25s ease}
+.contact .socials a:hover{color:var(--black)}
+
+footer{
+  display:flex;justify-content:space-between;
+  padding:28px 5vw;color:var(--grey);
+  border-top:1px solid var(--line);
+}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:760px){
+  nav.pill .links{display:none}
+  .project{grid-template-columns:38px 1fr auto;gap:14px;padding:24px 4px}
+  .project .tags{display:none}
+  .about .grid{grid-template-columns:1fr}
+  .about .photo{max-width:260px}
+  .about .cols{grid-template-columns:1fr}
+  .about{margin:8vh 10px;padding:10vh 7vw}
+  #preview{display:none}
+  .hero{padding-top:14vh;min-height:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <!-- orbs anchored to the page — scroll past them. top% = position in document -->
+  <div class="orb" style="top:2%;right:-12vmax;width:48vmax;--c:hsl(350 80% 84% / 0.48)"></div>
+  <div class="orb" style="top:13%;left:-15vmax;width:44vmax;--c:hsl(18 85% 83% / 0.42)"></div>
+  <div class="orb" style="top:27%;left:30%;width:34vmax;--c:hsl(46 78% 82% / 0.36)"></div>
+  <div class="orb" style="top:41%;right:-13vmax;width:46vmax;--c:hsl(95 40% 80% / 0.38)"></div>
+  <div class="orb" style="top:55%;left:-14vmax;width:48vmax;--c:hsl(160 42% 78% / 0.38)"></div>
+  <div class="orb" style="top:69%;right:12%;width:36vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+  <div class="orb" style="top:82%;left:-10vmax;width:42vmax;--c:hsl(240 45% 85% / 0.4)"></div>
+  <div class="orb" style="top:93%;right:-12vmax;width:44vmax;--c:hsl(275 50% 84% / 0.44)"></div>
+</div>
+</div>
+<div class="grain"></div>
+
+<!-- ░░ liquid glass nav ░░ -->
+<nav class="pill" id="nav">
+  <a class="logo" href="#top"><span class="dot"></span>avelino cortina</a>
+  <div class="links">
+    <a href="#work">work</a>
+    <a href="#about">about</a>
+    <a href="assets/pdf/resume-dec25.pdf" target="_blank">resume</a>
+  </div>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<!-- ░░ hero ░░ -->
+<header class="hero" id="top">
+  <div class="meta-row mono">
+    <span>portfolio — 2026</span>
+    <span>san diego, ca</span>
+  </div>
+  <h1>avelino<br>cortina</h1>
+  <p class="tagline">designing at the edge of clarity and emotion</p>
+  <div class="sub">
+    <p>i'm a designer and founder based in san diego, working across product, brand, and spatial design. my work runs from transit apps and startups to art installations, books, and architecture — anywhere craft and intention can make something feel more human. right now i'm building good graces, a platform helping churches stay connected through thoughtful, beautifully designed software.</p>
+    <div class="scroll-hint mono"><span>scroll</span><span class="bar"></span></div>
+  </div>
+</header>
+
+<!-- ░░ work index ░░ -->
+<section class="work" id="work">
+  <div class="section-head reveal">
+    <h2>work</h2>
+    <span class="mono">selected projects</span>
+  </div>
+
+  <!-- ░░ featured: good graces ░░ -->
+  <a class="featured reveal" href="goodgraces.html">
+    <div class="f-info">
+      <span class="badge">currently building</span>
+      <h3>good graces <em>001 — founder</em></h3>
+      <p>your entire church in one app. a mobile platform bringing communication, giving, events, and community into one beautifully designed experience — product, brand, and code, end to end.</p>
+      <div class="f-tags">
+        <span class="tag">product design</span>
+        <span class="tag">brand identity</span>
+        <span class="tag">react native</span>
+        <span class="tag">saas</span>
+      </div>
+      <span class="f-cta">full case study <span>↗</span></span>
+    </div>
+    <div class="f-img">
+      <!-- loads from goodgraces.app — swap for a local copy if you prefer -->
+      <img src="https://goodgraces.app/img/mockup-side2.png" alt="good graces app">
+    </div>
+  </a>
+
+  <!-- ░░ highlighted ░░ -->
+  <div class="hl-label reveal">
+    <h2 style="font-size:clamp(20px,2.6vw,32px);font-weight:500;letter-spacing:-0.025em;text-transform:lowercase">highlighted</h2>
+    <span class="mono">06 projects</span>
+  </div>
+  <div class="hl-grid">
+    <a class="hl-card reveal" href="ymca.html">
+      <div class="hl-img"><img src="assets/img/lobby-F3.png" alt="ymca trophy case design"></div>
+      <div class="hl-body">
+        <h4>ymca trophy case design <span>↗</span></h4>
+        <div class="hl-tags">community, architecture, design</div>
+      </div>
+    </a>
+    <a class="hl-card reveal" href="listone.html">
+      <div class="hl-img"><img src="assets/img/listone-hero.png" alt="listone app"></div>
+      <div class="hl-body">
+        <h4>listone <span>↗</span></h4>
+        <div class="hl-tags">product strategy, ui/ux, saas</div>
+      </div>
+    </a>
+    <a class="hl-card reveal" href="ketchup.html">
+      <div class="hl-img"><img src="assets/img/ketchup-poster.jpg" alt="ketchup app startup"></div>
+      <div class="hl-body">
+        <h4>ketchup app startup <span>↗</span></h4>
+        <div class="hl-tags">ui ux design, graphic design, branding</div>
+      </div>
+    </a>
+    <a class="hl-card reveal" href="mirroredconfessional.html">
+      <div class="hl-img"><img src="assets/img/1-1.jpg" alt="the mirrored confessional"></div>
+      <div class="hl-body">
+        <h4>the mirrored confessional <span>↗</span></h4>
+        <div class="hl-tags">experience design, experimental design, audio mixing, book making, publication design</div>
+      </div>
+    </a>
+    <a class="hl-card reveal" href="pigeon.html">
+      <div class="hl-img"><img src="assets/img/pigeonn.png" alt="berkeley pigeon project"></div>
+      <div class="hl-body">
+        <h4>berkeley pigeon project <span>↗</span></h4>
+        <div class="hl-tags">community, architecture, strategy</div>
+      </div>
+    </a>
+    <a class="hl-card reveal" href="missionbayshuttle.html">
+      <div class="hl-img"><img src="assets/img/mbs_mockup.jpg" alt="mission bay shuttle app design"></div>
+      <div class="hl-body">
+        <h4>mission bay shuttle app design <span>↗</span></h4>
+        <div class="hl-tags">ui ux design, graphic design, branding</div>
+      </div>
+    </a>
+    
+  </div>
+
+  <div class="hl-label reveal">
+    <h2 style="font-size:clamp(20px,2.6vw,32px);font-weight:500;letter-spacing:-0.025em;text-transform:lowercase">all work</h2>
+    <span class="mono">05 projects</span>
+  </div>
+
+  <a class="project reveal" href="realreal.html" data-slide="0">
+    <span class="idx mono">001</span>
+    <span class="name">the realreal <em>web banners</em></span>
+    <span class="tags"><span class="tag">campaign</span><span class="tag">marketing</span></span>
+    <span class="arrow">↗</span>
+  </a>
+
+  <a class="project reveal" href="widgetwakeup.html" data-slide="1">
+    <span class="idx mono">002</span>
+    <span class="name">widget wakeup <em>ios concept</em></span>
+    <span class="tags"><span class="tag">ios</span><span class="tag">concept</span></span>
+    <span class="arrow">↗</span>
+  </a>
+
+  <a class="project reveal" href="tents.html" data-slide="2">
+    <span class="idx mono">003</span>
+    <span class="name">richmond tent encampment <em>community design</em></span>
+    <span class="tags"><span class="tag">architecture</span><span class="tag">social</span></span>
+    <span class="arrow">↗</span>
+  </a>
+
+  <a class="project reveal" href="mightyleaf.html" data-slide="3">
+    <span class="idx mono">004</span>
+    <span class="name">mighty leaf <em>package redesign</em></span>
+    <span class="tags"><span class="tag">packaging</span><span class="tag">branding</span></span>
+    <span class="arrow">↗</span>
+  </a>
+
+  <a class="project reveal" href="wallcoffee.html" data-slide="4">
+    <span class="idx mono">005</span>
+    <span class="name">wall-mounted coffee machine <em>product design</em></span>
+    <span class="tags"><span class="tag">industrial</span><span class="tag">concept</span></span>
+    <span class="arrow">↗</span>
+  </a>
+
+</section>
+
+<!-- cursor-following preview -->
+<div id="preview" aria-hidden="true">
+  <img src="assets/img/realreal.jpg" alt="">
+  <img src="assets/img/wakeup.jpg" alt="">
+  <img src="assets/img/tents.png" alt="">
+  <img src="assets/img/leaf.png" alt="">
+  <img src="assets/img/wallmount.jpeg" alt="">
+</div>
+
+<!-- ░░ archive — opens glass popups ░░ -->
+<section class="archive">
+  <div class="section-head reveal">
+    <h2>archive</h2>
+    <span class="mono">smaller things</span>
+  </div>
+  <button class="archive-row reveal" data-modal="m-bible"><span>the holy bible of homosexuality</span><span class="mono">zine</span></button>
+  <button class="archive-row reveal" data-modal="m-pixelino"><span>pixelino font book</span><span class="mono">type</span></button>
+  <button class="archive-row reveal" data-modal="m-pfos"><span>portfolios</span><span class="mono">web design</span></button>
+  <button class="archive-row reveal" data-modal="m-fonefax"><span>fonefax</span><span class="mono">concept</span></button>
+  <button class="archive-row reveal" data-modal="m-immortal"><span>don't worry dear, i'm immortal</span><span class="mono">book</span></button>
+  <button class="archive-row reveal" data-modal="m-nhg"><span>neue haas grotesk book</span><span class="mono">editorial</span></button>
+  <button class="archive-row reveal" data-modal="m-fontposter"><span>font posters</span><span class="mono">type</span></button>
+</section>
+
+<!-- glass popup overlay -->
+<div class="overlay" id="overlay">
+  <button class="modal-close" id="modal-close" aria-label="close">✕</button>
+
+  <div class="modal" id="m-bible">
+    <img src="assets/img/cover and back2.jpg" alt="the holy bible of homosexuality">
+    <div class="body">
+      <span class="mono">zine — print</span>
+      <h3>the holy bible of homosexuality</h3>
+      <p>a printed zine reimagining religious aesthetics through queerness, repression, beauty, and survival. meant to be passed through rather than read linearly — a continuous object, not a book.</p>
+      <div class="actions"><a class="link" href="bible.html">read the zine <span>↗</span></a></div>
+    </div>
+  </div>
+
+  <div class="modal" id="m-pixelino">
+    <img src="assets/img/pixelino_book.jpeg" alt="pixelino font book">
+    <div class="body">
+      <span class="mono">type — print</span>
+      <h3>pixelino font book</h3>
+      <p>a specimen book for pixelino, a custom pixel typeface. the book treats the font as both artifact and system — exploring its grid, rhythm, and personality across print spreads.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="m-pfos">
+    <img src="assets/img/pfos.png" alt="portfolios">
+    <div class="body">
+      <span class="mono">concept — interface</span>
+      <h3>portfolios</h3>
+      <p>a portfolio reimagined as an operating system — windows, icons, and desktop metaphors turned into a way of browsing work. playful structure, serious craft.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="m-fonefax">
+    <img src="assets/img/fonefax2.png" alt="fonefax concept">
+    <div class="body">
+      <span class="mono">concept — product</span>
+      <h3>fonefax</h3>
+      <p>a speculative project merging retro fax technology with the smartphone — converting digital messages into tangible, physical outputs. in a world of cold glass screens, fonefax reclaims thoughtful communication: messages you can hold, share, and keep. convenience and meaning can coexist.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="m-immortal">
+    <img src="assets/img/bookpages.jpg" alt="don't worry dear, i'm immortal">
+    <div class="body">
+      <span class="mono">book — typography</span>
+      <h3>don't worry dear, i'm immortal</h3>
+      <p>a personal exploration of mortality and legacy through font design. a handwriting font symbolically preserves its creator's identity beyond the boundaries of life — accompanied by a poem meditating on creation, the desire to leave a mark, and how art keeps a spirit alive.</p>
+      <div class="actions"><a class="link" href="immortal.html">read more <span>↗</span></a></div>
+    </div>
+  </div>
+
+  <div class="modal" id="m-nhg">
+    <img src="assets/img/NHG.jpeg" alt="neue haas grotesk book">
+    <div class="body">
+      <span class="mono">editorial — typography</span>
+      <h3>neue haas grotesk book</h3>
+      <p>an editorial study letting the typeface narrate its own history, proportions, and personality across carefully gridded spreads. restraint is the whole point: white space, precise alignment, and scale shifts do the storytelling.</p>
+      <div class="actions"><a class="link" href="neuehaasbook.html">read more <span>↗</span></a></div>
+    </div>
+  </div>
+
+  <div class="modal" id="m-fontposter">
+    <img src="assets/img/neue-mockup.jpeg" alt="font posters">
+    <div class="body">
+      <span class="mono">type — print</span>
+      <h3>font posters</h3>
+      <p>three posters exploring cooper black, neue haas grotesk, and memphis — each built around the character of the font itself, letting weight, proportion, and rhythm dictate layout. type as material, not decoration.</p>
+      <div class="actions"><a class="link" href="fontposter.html">read more <span>↗</span></a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ marquee ░░ -->
+<div class="marquee-wrap reveal">
+  <div class="marquee" aria-hidden="true">
+    <span>ui & ux design</span><span>brand identity</span><span>web design</span><span>marketing & campaigns</span><span>product strategy</span><span>typography</span>
+    <span>ui & ux design</span><span>brand identity</span><span>web design</span><span>marketing & campaigns</span><span>product strategy</span><span>typography</span>
+  </div>
+</div>
+
+<!-- ░░ about ░░ -->
+<section style="padding:0">
+  <div class="about reveal" id="about">
+    <span class="mono">about</span>
+    <div class="grid">
+      <h3>hey, i'm avelino. i design things people actually want to use — apps, spaces, and products that are clear, intentional, and <span class="serif">a bit alive.</span> based in san diego, building good graces, and always tinkering on something.</h3>
+      <div class="photo"><img src="assets/img/hs.jpeg" alt="avelino cortina"></div>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span class="mono">01 — design</span>
+        <p>interfaces, identity, print, and spatial work. minimal by default, expressive when it earns it.</p>
+      </div>
+      <div class="col">
+        <span class="mono">02 — build</span>
+        <p>react, react native, and the frontend craft to ship what i design without losing the details in translation.</p>
+      </div>
+      <div class="col">
+        <span class="mono">03 — market</span>
+        <p>campaigns, content, and copy with an actual voice — work that performs because it feels human.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ contact ░░ -->
+<section class="contact reveal" id="contact">
+  <div class="halo"></div>
+  <span class="mono" style="color:var(--grey)">have a project in mind?</span>
+  <h2>let's make<br><span class="serif">something good</span></h2>
+  <a class="btn-glass" href="mailto:avelinocortinaiv@mac.com">avelinocortinaiv@mac.com <span>↗</span></a>
+  <div class="socials mono">
+    <a href="https://www.linkedin.com/in/aciv" target="_blank">linkedin</a>
+    <a href="assets/pdf/resume-dec25.pdf" target="_blank">resume</a>
+  </div>
+</section>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script>
+// ---------- scroll-driven hue (glow accents only) ----------
+const root = document.documentElement;
+let curHue = 340, targetHue = 340;
+window.addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  const p = max > 0 ? window.scrollY / max : 0;
+  targetHue = 340 + p * 300;
+}, {passive:true});
+(function hueLoop(){
+  curHue += (targetHue - curHue) * 0.06;
+  root.style.setProperty('--hue', (curHue % 360).toFixed(1));
+  requestAnimationFrame(hueLoop);
+})();
+
+
+
+// ---------- reveal ----------
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ---------- cursor preview ----------
+const preview = document.getElementById('preview');
+const slides = preview.querySelectorAll('img');
+const rows = document.querySelectorAll('.project');
+let px = 0, py = 0, tx = 0, ty = 0, raf = null;
+function loop(){
+  px += (tx - px) * 0.12;
+  py += (ty - py) * 0.12;
+  preview.style.transform = `translate(${px}px, ${py}px)`;
+  raf = requestAnimationFrame(loop);
+}
+rows.forEach(row => {
+  row.addEventListener('mouseenter', e => {
+    slides.forEach(s => s.classList.remove('on'));
+    slides[row.dataset.slide]?.classList.add('on');
+    preview.classList.add('on');
+    if (!raf) { px = tx = e.clientX + 28; py = ty = e.clientY - 120; loop(); }
+  });
+  row.addEventListener('mousemove', e => { tx = e.clientX + 28; ty = e.clientY - 120; });
+  row.addEventListener('mouseleave', () => preview.classList.remove('on'));
+});
+document.addEventListener('mouseleave', () => preview.classList.remove('on'));
+
+// ---------- archive modals ----------
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('modal-close');
+const modals = overlay.querySelectorAll('.modal');
+
+function openModal(id){
+  modals.forEach(m => m.classList.toggle('active', m.id === id));
+  modals.forEach(m => m.style.display = m.id === id ? 'block' : 'none');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('[data-modal]').forEach(btn =>
+  btn.addEventListener('click', () => openModal(btn.dataset.modal))
+);
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

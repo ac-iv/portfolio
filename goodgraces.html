@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>good graces — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+/* case-study extras */
+.gg-band{
+  max-width:1300px;margin:2vh auto 0;padding:0 5vw;
+}
+.gg-band img{
+  width:100%;display:block;border-radius:20px;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 30px 80px rgba(0,0,0,0.12);
+}
+.gg-section{
+  max-width:1300px;margin:0 auto;
+  padding:9vh 5vw 3vh;
+}
+.gg-section .kicker{color:var(--grey);display:block;margin-bottom:18px}
+.gg-section h2{
+  font-size:clamp(26px,3.6vw,48px);
+  font-weight:500;letter-spacing:-0.03em;line-height:1.15;
+  text-transform:lowercase;
+  max-width:22ch;
+}
+.gg-section .body{
+  margin-top:24px;
+  max-width:680px;
+  font-size:15.5px;line-height:1.65;
+  color:rgba(13,13,13,0.75);
+}
+.gg-section .body p{margin-bottom:1.2em}
+
+/* alternating walkthrough rows */
+.walk{
+  max-width:1300px;margin:0 auto;
+  padding:5vh 5vw;
+  display:grid;grid-template-columns:1fr 1.1fr;
+  gap:6vw;align-items:center;
+}
+.walk.flip{grid-template-columns:1.1fr 1fr}
+.walk.flip .walk-text{order:2}
+.walk.flip .walk-img{order:1}
+.walk-text .mono{color:var(--grey);display:block;margin-bottom:14px}
+.walk-text h3{
+  font-size:clamp(22px,2.6vw,34px);
+  font-weight:500;letter-spacing:-0.025em;
+  text-transform:lowercase;
+  margin-bottom:16px;
+}
+.walk-text p{
+  font-size:15px;line-height:1.65;
+  color:rgba(13,13,13,0.72);
+  margin-bottom:1em;
+}
+.walk-img img{
+  width:100%;display:block;border-radius:20px;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 24px 70px rgba(0,0,0,0.12);
+}
+
+/* design language: palette + type */
+.lang{
+  max-width:1300px;margin:4vh auto;
+  padding:0 5vw;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:22px;
+}
+.lang .card{
+  background:rgba(255,255,255,0.6);
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.8);
+  border-radius:22px;
+  padding:34px;
+  box-shadow:0 16px 50px rgba(0,0,0,0.07), 0 1px 1px rgba(255,255,255,0.9) inset;
+}
+.lang .card h4{
+  font-size:17px;font-weight:500;letter-spacing:-0.01em;
+  text-transform:lowercase;margin-bottom:8px;
+}
+.lang .card p{font-size:14px;line-height:1.6;color:rgba(13,13,13,0.7)}
+.swatches{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.swatch{display:flex;flex-direction:column;gap:8px;align-items:center}
+.swatch .chip{
+  width:56px;height:56px;border-radius:50%;
+  border:1px solid rgba(13,13,13,0.08);
+  box-shadow:0 6px 18px rgba(0,0,0,0.1);
+}
+.swatch .mono{color:var(--grey);font-size:9.5px}
+.typeline{
+  margin-top:20px;
+  font-size:clamp(26px,3vw,40px);
+  letter-spacing:-0.03em;line-height:1.2;
+}
+.typeline .gg-serif{font-family:'Instrument Serif',serif;font-style:italic}
+
+/* principles row */
+.principles{
+  max-width:1300px;margin:4vh auto 8vh;
+  padding:0 5vw;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+}
+.principles .p-card{
+  border-top:1px solid var(--line);
+  padding-top:22px;
+}
+.principles .p-card .mono{color:var(--grey);display:block;margin-bottom:12px}
+.principles .p-card p{font-size:14px;line-height:1.6;color:rgba(13,13,13,0.7)}
+
+@media (max-width:860px){
+  .walk,.walk.flip{grid-template-columns:1fr}
+  .walk.flip .walk-text{order:1}
+  .walk.flip .walk-img{order:2}
+  .lang{grid-template-columns:1fr}
+  .principles{grid-template-columns:1fr;gap:30px}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:3%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:24%;left:-16vmax;width:50vmax;--c:hsl(20 85% 83% / 0.4)"></div>
+  <div class="orb" style="top:46%;right:-12vmax;width:44vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:66%;left:-12vmax;width:46vmax;--c:hsl(150 40% 80% / 0.38)"></div>
+  <div class="orb" style="top:84%;right:8%;width:42vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+  <div class="orb" style="top:96%;left:10%;width:38vmax;--c:hsl(275 50% 84% / 0.4)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>001 — current project</span><span>2025 — now</span></div>
+  <h1>good graces</h1>
+  <p class="p-sub">your entire church in one app</p>
+</header>
+
+<div class="p-body" style="padding-bottom:0">
+  <aside class="p-info">
+    <p>good graces is a mobile platform i founded to modernize how churches communicate, organize outreach, and stay connected with their members through the week — not just on sundays. it brings messaging, announcements, giving, volunteer coordination, events, and member engagement into one experience designed for everyday use.</p>
+    <p>the conviction behind it is simple: <strong>faith communities deserve technology that feels thoughtful, human, and beautifully designed.</strong> most church software is built like enterprise tooling — bloated, dated, and cold. good graces is built like a consumer product people actually want to open.</p>
+    <p>i lead product, design, and development end to end — from the brand and design system to the react native app — alongside my co-founder on strategy and operations.</p>
+    <div class="meta mono">
+      year — 2025 to now<br>
+      role — founder, product, design, development<br>
+      category — mobile platform / saas
+    </div>
+    <a class="btn-dark" href="https://www.goodgraces.app" target="_blank">visit goodgraces.app <span>↗</span></a>
+  </aside>
+  <div class="p-media">
+    <!-- images load from goodgraces.app — swap for local copies in assets/ if you prefer -->
+    <img class="reveal" src="https://goodgraces.app/img/mockup-side2.png" alt="good graces app mockups">
+  </div>
+</div>
+
+<!-- the problem -->
+<section class="gg-section reveal">
+  <span class="kicker mono">the problem</span>
+  <h2>churches are stuck between outdated systems and modern expectations</h2>
+  <div class="body">
+    <p>many churches run on disconnected tools — a website from 2012, a bulk email list, a giving portal that lives somewhere else entirely. communication is fragmented, engagement drops between sundays, and younger generations who expect seamless digital experiences in every other part of life simply drift.</p>
+    <p>good graces bridges that gap through intentional design and human-centered technology. the goal was never to replace what churches do — it's to help them reach people more effectively, foster real relationships, and strengthen their communities.</p>
+  </div>
+</section>
+
+<!-- design walkthrough -->
+<section class="gg-section reveal" style="padding-bottom:0">
+  <span class="kicker mono">design walkthrough</span>
+  <h2>built for churches. designed for people.</h2>
+  <div class="body">
+    <p>every screen in good graces is designed to reduce friction and increase connection. the walkthrough below covers the three core surfaces of the app and the thinking behind each.</p>
+  </div>
+</section>
+
+<div class="walk reveal">
+  <div class="walk-text">
+    <span class="mono">01 — community feed</span>
+    <h3>a social experience with a purpose</h3>
+    <p>the feed centralizes updates, prayer requests, volunteer opportunities, announcements, and events into one scrollable home. it borrows the familiarity of social media — cards, avatars, reactions — but strips the noise: no algorithmic chaos, no ads, just the community.</p>
+    <p>the design challenge was tone. a prayer request and a potluck announcement can't be flattened into identical posts, so the card system uses subtle type, color, and spacing shifts to give each content type its own weight without fragmenting the feed.</p>
+  </div>
+  <div class="walk-img"><img src="https://goodgraces.app/img/new-mockups/2.png" alt="good graces community feed"></div>
+</div>
+
+<div class="walk flip reveal">
+  <div class="walk-text">
+    <span class="mono">02 — home dashboard</span>
+    <h3>everything at a glance, personalized per church</h3>
+    <p>the home dashboard surfaces key tools and updates the moment the app opens — tailored to each church's structure and each member's involvement. a volunteer sees their next shift; a new member sees ways to plug in.</p>
+    <p>navigation was designed around one rule: nothing important should be more than two taps away. the information architecture went through multiple rounds of card-sorting and prototype testing to get the hierarchy right for both 80-year-old deacons and 16-year-old youth group members — the real accessibility range of a church.</p>
+  </div>
+  <div class="walk-img"><img src="https://goodgraces.app/img/new-mockups/5.png" alt="good graces home dashboard"></div>
+</div>
+
+<div class="walk reveal">
+  <div class="walk-text">
+    <span class="mono">03 — modern giving</span>
+    <h3>generosity without the friction</h3>
+    <p>secure donations, recurring giving, and campaigns are integrated directly into the platform instead of bouncing members to a third-party portal. the giving flow is deliberately calm — clear amounts, transparent confirmation, no dark patterns, no guilt mechanics.</p>
+    <p>trust is the whole design problem here. every choice — from the typography of dollar amounts to the language of confirmations — was made to feel as considered as a well-designed banking app, because that's the bar people carry in their pocket.</p>
+  </div>
+  <div class="walk-img"><img src="https://goodgraces.app/img/new-mockups/4.png" alt="good graces giving experience"></div>
+</div>
+
+<!-- design language -->
+<section class="gg-section reveal">
+  <span class="kicker mono">design language</span>
+  <h2>warm, minimal, and quietly confident</h2>
+  <div class="body">
+    <p>the visual identity rejects both the corporate-saas look and the over-stylized "church media" aesthetic. it's built on warmth and restraint: cream backgrounds, a single coral accent, near-black type, and generous space.</p>
+  </div>
+</section>
+
+<div class="lang reveal">
+  <div class="card">
+    <h4>palette</h4>
+    <p>a warm off-white foundation keeps screens soft and readable for long sessions. coral is reserved for moments that matter — primary actions, live indicators — so it never loses meaning.</p>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#F6F0E6"></div><span class="mono">#f6f0e6</span></div>
+      <div class="swatch"><div class="chip" style="background:#E8614A"></div><span class="mono">#e8614a</span></div>
+      <div class="swatch"><div class="chip" style="background:#1A1A1A"></div><span class="mono">#1a1a1a</span></div>
+      <div class="swatch"><div class="chip" style="background:#3A3733"></div><span class="mono">#3a3733</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h4>type & voice</h4>
+    <p>a clean grotesque carries the interface; an expressive serif appears sparingly in marketing moments. the writing is plain, warm, and human — no jargon, no church-software speak.</p>
+    <div class="typeline">your entire church <span class="gg-serif">in one app.</span></div>
+  </div>
+</div>
+
+<!-- product principles -->
+<section class="gg-section reveal" style="padding-top:4vh;padding-bottom:0">
+  <span class="kicker mono">built to last</span>
+  <h2>designed to scale from one congregation to a network</h2>
+  <div class="body">
+    <p>good graces runs on a transparent subscription model that scales with congregation size — accessible to a 100-member church, robust enough for multi-campus networks. the product architecture mirrors that: one design system, flexible per-church configuration, and a react native codebase built to grow.</p>
+  </div>
+</section>
+
+<div class="principles reveal">
+  <div class="p-card">
+    <span class="mono">i — everyday, not just sunday</span>
+    <p>connection shouldn't spike once a week. every feature is designed for tuesday-afternoon usefulness — the quiet moments where community actually forms.</p>
+  </div>
+  <div class="p-card">
+    <span class="mono">ii — warmth over efficiency</span>
+    <p>this is software for relationships, not throughput. when a design decision trades a little efficiency for a lot of humanity, humanity wins.</p>
+  </div>
+  <div class="p-card">
+    <span class="mono">iii — intimacy at scale</span>
+    <p>growing from local congregations to national networks can't cost the closeness that makes a church a church. the system scales; the feeling doesn't dilute.</p>
+  </div>
+</div>
+
+<div class="gg-band reveal" style="padding-bottom:8vh">
+  <img src="https://goodgraces.app/img/mockup-tablet8.png" alt="good graces church platform">
+</div>
+
+<nav class="p-next">
+  <a href="neuehaasbook.html"><span class="mono">← previous</span><span class="title">neue haas grotesk book</span></a>
+  <a class="next" href="missionbayshuttle.html"><span class="mono">next →</span><span class="title">mission bay shuttle</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+</body>
+</html>

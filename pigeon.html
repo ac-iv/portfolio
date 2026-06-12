@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>berkeley pigeon project — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+/* pdf spread viewers */
+.stage{
+  background:rgba(255,255,255,0.65);
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.8);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.08), 0 1px 1px rgba(255,255,255,0.9) inset;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  margin:5vh auto;
+  max-width:1100px;
+}
+.stage h2{
+  font-size:clamp(18px,2.2vw,26px);font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;align-self:flex-start;
+}
+.page-spread{width:100%;display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.page-spread canvas{
+  background:#fff;border-radius:12px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.14);
+  display:block;max-width:100%;height:auto;
+}
+.controls{display:flex;gap:14px;align-items:center}
+.controls button{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
+  background:none;border:1px solid var(--line);
+  padding:8px 16px;cursor:pointer;border-radius:100px;
+  color:inherit;transition:all 0.3s ease;
+}
+.controls button:hover{border-color:currentColor}
+.indicator{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;opacity:0.6}
+.dl-row{display:flex;gap:12px;align-self:flex-start;flex-wrap:wrap}
+.dl-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;text-transform:lowercase;
+  padding:10px 18px;border-radius:100px;
+  background:var(--black);color:var(--white);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.dl-btn:hover{transform:scale(1.03);box-shadow:0 0 24px hsl(var(--hue) 75% 75% / 0.6)}
+.gg-section{max-width:1100px;margin:0 auto;padding:8vh 5vw 2vh}
+.gg-section .kicker{color:var(--grey);display:block;margin-bottom:18px}
+.gg-section h2{font-size:clamp(24px,3.2vw,44px);font-weight:500;letter-spacing:-0.03em;line-height:1.15;text-transform:lowercase;max-width:22ch}
+.gg-section .body{margin-top:24px;max-width:680px;font-size:15.5px;line-height:1.65;color:rgba(13,13,13,0.75)}
+.gg-section .body p{margin-bottom:1.2em}
+@media (max-width:760px){
+  .stage{padding:18px;margin:4vh 5vw}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:3%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:30%;left:-16vmax;width:50vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:60%;right:-12vmax;width:44vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+  <div class="orb" style="top:88%;left:6%;width:40vmax;--c:hsl(275 50% 84% / 0.4)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>007 — civic design / strategy</span><span>2024</span></div>
+  <h1>berkeley pigeon project</h1>
+  <p class="p-sub">humane urban wildlife design with the city of berkeley</p>
+</header>
+
+<div class="p-body" style="padding-bottom:2vh">
+  <aside class="p-info">
+    <p>the pigeon roosting mitigation project at the telegraph-channing garage transforms how urban spaces interact with wildlife. developed in collaboration with the city of berkeley's public works department, it takes humane, sustainable approaches to a common but poorly managed urban problem — one costing the city roughly $20,000 a year in cleaning and repairs.</p>
+    <p>historically, solutions like spikes, nets, and chemical deterrents have been deployed with varying success, often lacking compassion and long-term efficacy. our team developed three coordinated solutions: bird deterrent spikes replacing an outdated electric shock system, galvanized steel netting replacing failing nylon on the north-facing levels, and an ultrasonic predator deterrent system for hard-to-reach roof and gutter areas.</p>
+    <p><strong>the goal is a paradigm shift in urban pest control — away from adversarial approaches, toward solutions that harmonize with nature.</strong></p>
+    <p>community collaboration shaped the whole effort: working directly with berkeley residents and stakeholders ensured the implementations serve both the public and the wildlife ethically. the project aspires to set a new benchmark for how cities integrate humane wildlife management into their infrastructure.</p>
+    <div class="meta mono">
+      year — 2024<br>
+      role — research, strategy, community engagement<br>
+      category — civic design / architecture<br>
+      client — city of berkeley public works
+    </div>
+  </aside>
+</div>
+
+<!-- project presentation pdf -->
+<section class="gg-section reveal">
+  <span class="kicker mono">publication</span>
+  <h2>project presentation</h2>
+  <div class="body">
+    <p>the full project presentation — research findings, three proposed solutions, site documentation, and community feedback synthesis — compiled as an interactive spread. flip through below, or download the pdfs directly.</p>
+  </div>
+</section>
+
+<div class="stage reveal" id="book-stage">
+  <h2>project presentation</h2>
+  <div class="page-spread" id="book-spread">
+    <canvas id="book-left"></canvas>
+    <canvas id="book-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="book-prev">‹ prev</button>
+    <div class="indicator" id="book-indicator">page —</div>
+    <button id="book-next">next ›</button>
+  </div>
+  <div class="dl-row">
+    <a class="dl-btn" href="assets/pdfs/pigeon-book.pdf" target="_blank">download presentation <span>↗</span></a>
+  </div>
+</div>
+
+<!-- site visit pdf -->
+<div class="stage reveal" id="sv-stage">
+  <h2>site visit documentation</h2>
+  <div class="page-spread" id="sv-spread">
+    <canvas id="sv-left"></canvas>
+    <canvas id="sv-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="sv-prev">‹ prev</button>
+    <div class="indicator" id="sv-indicator">page —</div>
+    <button id="sv-next">next ›</button>
+  </div>
+  <div class="dl-row">
+    <a class="dl-btn" href="assets/pdfs/Site_Visit(PDF).pdf" target="_blank">download site visit <span>↗</span></a>
+  </div>
+</div>
+
+<!-- findings report pdf -->
+<div class="stage reveal" id="fr-stage" style="margin-bottom:8vh">
+  <h2>findings report</h2>
+  <div class="page-spread" id="fr-spread">
+    <canvas id="fr-left"></canvas>
+    <canvas id="fr-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="fr-prev">‹ prev</button>
+    <div class="indicator" id="fr-indicator">page —</div>
+    <button id="fr-next">next ›</button>
+  </div>
+  <div class="dl-row">
+    <a class="dl-btn" href="assets/pdfs/ARCH%20400%20-%20Pigeon%20Report-2.pdf" target="_blank">download findings report <span>↗</span></a>
+  </div>
+</div>
+
+<nav class="p-next">
+  <a href="ymca.html"><span class="mono">← previous</span><span class="title">ymca trophy case</span></a>
+  <a class="next" href="realreal.html"><span class="mono">next →</span><span class="title">the realreal</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+// ── reusable pdf spread viewer ──
+function SpreadViewer(id, pdfUrl){
+  const R = {
+    left: document.getElementById(`${id}-left`),
+    right: document.getElementById(`${id}-right`),
+    spread: document.getElementById(`${id}-spread`),
+    indicator: document.getElementById(`${id}-indicator`),
+    prev: document.getElementById(`${id}-prev`),
+    next: document.getElementById(`${id}-next`),
+  };
+  let doc = null, page = 1;
+
+  function renderPage(d, pn, canvas, tw){
+    if(!d||!canvas) return Promise.resolve();
+    return d.getPage(pn).then(p=>{
+      const vp1=p.getViewport({scale:1});
+      const vp=p.getViewport({scale:tw/vp1.width});
+      const ctx=canvas.getContext('2d');
+      canvas.width=vp.width;canvas.height=vp.height;
+      canvas.style.width=Math.min(vp.width,tw)+'px';
+      return p.render({canvasContext:ctx,viewport:vp}).promise;
+    }).catch(()=>{
+      const ctx=canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width||1,canvas.height||1);
+    });
+  }
+
+  function render(){
+    if(!doc) return;
+    const left=page;
+    const right=(page+1<=doc.numPages)?page+1:null;
+    R.right.style.display=right?'block':'none';
+    const cw=Math.min(900,R.spread.offsetWidth||900);
+    const tw=right?(cw/2-14):Math.min(720,cw);
+    Promise.all([
+      renderPage(doc,left,R.left,tw),
+      right?renderPage(doc,right,R.right,tw):Promise.resolve()
+    ]).then(()=>{
+      R.indicator.textContent=right?`page ${left}–${right}`:`page ${left}`;
+    });
+  }
+
+  pdfjsLib.getDocument(pdfUrl).promise.then(d=>{
+    doc=d; page=1; render();
+  }).catch(()=>{
+    R.indicator.textContent='pdf not found';
+  });
+
+  R.next.addEventListener('click',()=>{
+    if(!doc) return;
+    if(page+2<=doc.numPages) page+=2;
+    else if(page<doc.numPages) page=doc.numPages;
+    render();
+  });
+  R.prev.addEventListener('click',()=>{
+    if(!doc) return;
+    page=Math.max(1,page-2);
+    render();
+  });
+
+  let rt=null;
+  window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(render,160)});
+}
+
+// init all three viewers
+SpreadViewer('book','assets/pdfs/pigeon-book.pdf');
+SpreadViewer('sv','assets/pdfs/Site_Visit(PDF).pdf');
+SpreadViewer('fr','assets/pdfs/ARCH%20400%20-%20Pigeon%20Report-2.pdf');
+</script>
+</body>
+</html>

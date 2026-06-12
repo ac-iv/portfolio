@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>the mirrored confessional — avelino cortina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="project.css">
+<style>
+/* page-specific: book stages + audio */
+.stage{
+  background:rgba(255,255,255,0.65);
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.8);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.08), 0 1px 1px rgba(255,255,255,0.9) inset;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  margin:5vh auto;
+  max-width:1100px;
+}
+.stage.dark{
+  background:rgba(13,13,13,0.92);
+  border-color:rgba(255,255,255,0.12);
+  color:#fff;
+}
+.stage h2{
+  font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;align-self:flex-start;
+}
+.page-spread{width:100%;display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.page-spread canvas{
+  background:#fff;border-radius:12px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.14);
+  display:block;max-width:100%;height:auto;
+}
+.controls{display:flex;gap:14px;align-items:center}
+.controls button{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
+  background:none;border:1px solid var(--line);
+  padding:8px 16px;cursor:pointer;border-radius:100px;
+  color:inherit;
+  transition:all 0.3s ease;
+}
+.controls button:hover{border-color:currentColor}
+.stage.dark .controls button{border-color:rgba(255,255,255,0.2)}
+.indicator{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;opacity:0.6}
+
+.audio-area{max-width:1100px;margin:8vh auto;padding:0 5vw;text-align:center}
+.audio-area h2{
+  font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;margin-bottom:24px;
+}
+.audio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:680px;margin:0 auto}
+.audio-btn{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:lowercase;
+  padding:14px 10px;border-radius:100px;
+  border:1px solid var(--line);background:rgba(255,255,255,0.5);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  cursor:pointer;color:inherit;
+  transition:all 0.3s ease;
+}
+.audio-btn:hover,.audio-btn.playing{
+  background:var(--black);color:#fff;border-color:var(--black);
+  box-shadow:0 0 24px hsl(var(--hue) 75% 75% / 0.6);
+}
+.dynamic{
+  margin-top:16px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:lowercase;
+  padding:14px 26px;border-radius:100px;
+  background:var(--black);color:#fff;border:1px solid var(--black);
+  cursor:pointer;
+  transition:box-shadow 0.3s ease, transform 0.3s var(--ease);
+}
+.dynamic:hover{transform:scale(1.03);box-shadow:0 0 28px hsl(var(--hue) 75% 75% / 0.7)}
+.audio-area .note{margin-top:14px;color:var(--grey);font-size:13px}
+
+.img-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;
+  max-width:1100px;margin:6vh auto;padding:0 5vw;
+}
+.img-row img,.img-row video{
+  width:100%;height:480px;object-fit:cover;border-radius:16px;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 20px 60px rgba(0,0,0,0.1);
+}
+@media (max-width:760px){
+  .audio-grid{grid-template-columns:1fr 1fr}
+  .img-row img,.img-row video{height:240px}
+  .stage{padding:18px;margin:4vh 5vw}
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles">
+  <div class="orb" style="top:4%;right:-14vmax;width:46vmax;--c:hsl(350 80% 84% / 0.45)"></div>
+  <div class="orb" style="top:38%;left:-16vmax;width:50vmax;--c:hsl(46 78% 82% / 0.4)"></div>
+  <div class="orb" style="top:70%;right:-10vmax;width:44vmax;--c:hsl(205 65% 82% / 0.42)"></div>
+  <div class="orb" style="top:94%;left:6%;width:40vmax;--c:hsl(275 50% 84% / 0.4)"></div>
+</div>
+<div class="grain"></div>
+
+<nav class="pill" id="nav">
+  <a class="back" href="index.html">← index</a>
+  <a class="logo" href="index.html"><span class="dot"></span>avelino cortina</a>
+  <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
+</nav>
+
+<header class="p-head">
+  <div class="crumb mono"><span>003 — installation</span><span>2025</span></div>
+  <h1>the mirrored confessional</h1>
+  <p class="p-sub">confession as confrontation with the self</p>
+</header>
+
+<div class="p-body">
+  <aside class="p-info">
+    <p>the mirrored confessional explores the fragile space between identity, religion, and self-revelation. this installation transforms the traditional act of confession into an intimate confrontation with the self, asking visitors to sit with their own reflection while listening to the stories of others. at the heart of the work is an audio booth that functions as both sanctuary and stage, where vulnerability becomes a form of resistance and truth is spoken without absolution.</p>
+    <p>the installation is accompanied by two printed works: a project manifesto that articulates the emotional and conceptual foundation of the piece, and a zine — <em>the holy bible of homosexuality</em> — which reimagines religious aesthetics through the lens of queerness, repression, beauty, and survival. together, these elements form a quiet but confrontational landscape that asks what it means to confess, to believe, and to exist honestly in spaces that were never built to hold us.</p>
+    <div class="meta mono">
+      year — 2025<br>
+      role — concept, installation, print, audio<br>
+      category — installation art
+    </div>
+  </aside>
+  <div class="p-media">
+    <img class="reveal" src="assets/img/confessional/1.jpeg" alt="the mirrored confessional installation">
+  </div>
+</div>
+
+<!-- manifesto spreads -->
+<div class="stage reveal" id="manifesto-stage">
+  <h2>project manifesto</h2>
+  <div class="page-spread" id="manifesto-spread">
+    <canvas id="manifesto-left"></canvas>
+    <canvas id="manifesto-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="manifesto-prev">‹ prev</button>
+    <div class="indicator" id="manifesto-indicator">page —</div>
+    <button id="manifesto-next">next ›</button>
+  </div>
+</div>
+
+<!-- bible spreads -->
+<div class="stage dark reveal" id="bible-stage">
+  <h2>the holy bible of homosexuality</h2>
+  <div class="page-spread" id="bible-spread">
+    <canvas id="bible-left"></canvas>
+    <canvas id="bible-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="bible-prev">‹ prev</button>
+    <div class="indicator" id="bible-indicator">page —</div>
+    <button id="bible-next">next ›</button>
+  </div>
+</div>
+
+<!-- installation media -->
+<div class="img-row reveal">
+  <img src="assets/img/confessional/1.jpeg" alt="">
+  <video src="assets/video/confessional_compressed.mp4" autoplay muted loop playsinline></video>
+  <img src="assets/img/chang.jpeg" alt="">
+</div>
+
+<!-- audio -->
+<section class="audio-area reveal" aria-label="audio narratives">
+  <h2>audio narratives</h2>
+  <div class="audio-grid">
+    <button class="audio-btn" id="audio-btn-0">narrative i</button>
+    <button class="audio-btn" id="audio-btn-1">narrative ii</button>
+    <button class="audio-btn" id="audio-btn-2">narrative iii</button>
+    <button class="audio-btn" id="audio-btn-3">narrative iv</button>
+  </div>
+  <button class="dynamic" id="dynamic-mix">start dynamic mix</button>
+  <p class="note">audio excerpts from participant confessions</p>
+</section>
+
+<nav class="p-next">
+  <a href="missionbayshuttle.html"><span class="mono">← previous</span><span class="title">mission bay shuttle</span></a>
+  <a class="next" href="ketchup.html"><span class="mono">next →</span><span class="title">ketchup</span></a>
+</nav>
+
+<footer class="mono">
+  <span>© 2026 avelino cortina iv</span>
+  <span>designed & built by me</span>
+</footer>
+
+<script src="theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+const CONFIG = {
+  manifestoPdf: "assets/pdf/manifesto.pdf",
+  biblePdf: "assets/pdf/bible.pdf",
+  audioFiles: [
+    "assets/audio/Avelino_Cortina.mp3",
+    "assets/audio/Mole_McHenry.mp3",
+    "assets/audio/Timo_Weila.mp3",
+    "assets/audio/Anonymous.mp3"
+  ]
+};
+
+const refs = name => ({
+  left: document.getElementById(`${name}-left`),
+  right: document.getElementById(`${name}-right`),
+  spread: document.getElementById(`${name}-spread`),
+  indicator: document.getElementById(`${name}-indicator`),
+  prev: document.getElementById(`${name}-prev`),
+  next: document.getElementById(`${name}-next`),
+});
+const M = refs("manifesto"), B = refs("bible");
+let manifestoDoc = null, bibleDoc = null, manifestoPage = 1, biblePage = 1;
+
+Promise.allSettled([
+  pdfjsLib.getDocument(CONFIG.manifestoPdf).promise,
+  pdfjsLib.getDocument(CONFIG.biblePdf).promise
+]).then(results => {
+  if (results[0].status === "fulfilled") { manifestoDoc = results[0].value; renderBook(M, manifestoDoc, manifestoPage); }
+  else M.indicator.textContent = "manifesto not found";
+  if (results[1].status === "fulfilled") { bibleDoc = results[1].value; renderBook(B, bibleDoc, biblePage); }
+  else B.indicator.textContent = "bible not found";
+});
+
+function renderPage(doc, pageNum, canvas, targetWidth) {
+  if (!doc || !canvas) return Promise.resolve();
+  return doc.getPage(pageNum).then(page => {
+    const vp1 = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: targetWidth / vp1.width });
+    const ctx = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.width = Math.min(viewport.width, targetWidth) + "px";
+    return page.render({ canvasContext: ctx, viewport }).promise;
+  }).catch(() => {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width || 1, canvas.height || 1);
+  });
+}
+
+function renderBook(R, doc, pageNum) {
+  if (!doc) return;
+  const left = pageNum;
+  const right = (pageNum + 1 <= doc.numPages) ? pageNum + 1 : null;
+  R.right.style.display = right ? "block" : "none";
+  const containerW = Math.min(900, R.spread.offsetWidth || 900);
+  const targetWidth = right ? (containerW / 2 - 14) : Math.min(720, containerW);
+  Promise.all([
+    renderPage(doc, left, R.left, targetWidth),
+    right ? renderPage(doc, right, R.right, targetWidth) : Promise.resolve()
+  ]).then(() => {
+    R.indicator.textContent = right ? `page ${left}–${right}` : `page ${left}`;
+  });
+}
+
+M.next.addEventListener("click", () => {
+  if (!manifestoDoc) return;
+  if (manifestoPage + 2 <= manifestoDoc.numPages) manifestoPage += 2;
+  else if (manifestoPage < manifestoDoc.numPages) manifestoPage = manifestoDoc.numPages;
+  renderBook(M, manifestoDoc, manifestoPage);
+});
+M.prev.addEventListener("click", () => {
+  if (!manifestoDoc) return;
+  manifestoPage = Math.max(1, manifestoPage - 2);
+  renderBook(M, manifestoDoc, manifestoPage);
+});
+B.next.addEventListener("click", () => {
+  if (!bibleDoc) return;
+  if (biblePage + 2 <= bibleDoc.numPages) biblePage += 2;
+  else if (biblePage < bibleDoc.numPages) biblePage = bibleDoc.numPages;
+  renderBook(B, bibleDoc, biblePage);
+});
+B.prev.addEventListener("click", () => {
+  if (!bibleDoc) return;
+  biblePage = Math.max(1, biblePage - 2);
+  renderBook(B, bibleDoc, biblePage);
+});
+
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    renderBook(M, manifestoDoc, manifestoPage);
+    renderBook(B, bibleDoc, biblePage);
+  }, 160);
+});
+
+/* audio */
+const audioEls = CONFIG.audioFiles.map(src => {
+  const a = new Audio(src);
+  a.preload = "auto";
+  return a;
+});
+function stopAllAudio(){
+  audioEls.forEach(a => { try { a.pause(); a.currentTime = 0; } catch(e){} });
+  document.querySelectorAll('.audio-btn').forEach(b => b.classList.remove('playing'));
+}
+for (let i = 0; i < 4; i++) {
+  const btn = document.getElementById(`audio-btn-${i}`);
+  btn.addEventListener("click", () => {
+    const wasPlaying = btn.classList.contains('playing');
+    stopDynamicMix();
+    stopAllAudio();
+    if (!wasPlaying) {
+      audioEls[i].play().catch(()=>{});
+      btn.classList.add('playing');
+    }
+  });
+}
+
+let mixInterval = null, mixRunning = false;
+const dynamicBtn = document.getElementById("dynamic-mix");
+dynamicBtn.addEventListener("click", () => mixRunning ? stopDynamicMix() : startDynamicMix());
+
+function startDynamicMix(){
+  stopAllAudio();
+  audioEls.forEach((a, i) => {
+    a.loop = true;
+    a.volume = (i === 0) ? 1 : 0.25;
+    a.play().catch(()=>{});
+  });
+  let focus = 0;
+  mixRunning = true;
+  dynamicBtn.textContent = "stop dynamic mix";
+  mixInterval = setInterval(() => {
+    focus = (focus + 1) % audioEls.length;
+    audioEls.forEach((a, i) => smoothVolume(a, i === focus ? 1 : 0.2, 600));
+  }, 5500);
+}
+function stopDynamicMix(){
+  mixRunning = false;
+  dynamicBtn.textContent = "start dynamic mix";
+  clearInterval(mixInterval);
+  mixInterval = null;
+  audioEls.forEach(a => { a.loop = false; });
+  stopAllAudio();
+}
+function smoothVolume(a, target, ms){
+  const start = a.volume, t0 = performance.now();
+  (function step(){
+    const t = Math.min(1, (performance.now() - t0) / ms);
+    a.volume = start + (target - start) * t;
+    if (t < 1) requestAnimationFrame(step);
+  })();
+}
+window.addEventListener("beforeunload", () => { stopDynamicMix(); stopAllAudio(); });
+</script>
+</body>
+</html>
