@@ -179,6 +179,25 @@ section{padding:13vh 5vw}
 }
 .section-head .mono{color:var(--grey)}
 
+/* ---------- dynamic logo pop effect ---------- */
+nav.pill .logo {
+  max-width: 0px;
+  opacity: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow: hidden;
+  /* A plush, bouncy cubic-bezier curve for that cute gesture */
+  transition: 
+    max-width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
+    opacity 0.4s ease, 
+    padding 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+nav.pill .logo.visible {
+  max-width: 250px; /* Big enough to comfortably fit your name */
+  opacity: 1;
+  padding: 8px clamp(8px,1.4vw,16px) 8px clamp(8px,1.2vw,14px);
+}
 /* ---------- featured: good graces ---------- */
 .featured{
   display:grid;
@@ -973,6 +992,29 @@ document.querySelectorAll('[data-modal]').forEach(btn =>
 closeBtn.addEventListener('click', closeModal);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ---------- dynamic nav logo pop ----------
+const heroTitle = document.querySelector('.hero h1');
+const navLogo = document.querySelector('nav.pill .logo');
+
+const logoObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    // If the main large H1 is NOT intersecting (scrolled past), show the small logo
+    if (!entry.isIntersecting) {
+      navLogo.classList.add('visible');
+    } else {
+      navLogo.classList.remove('visible');
+    }
+  });
+}, {
+  // Triggers exactly when the top of the main H1 passes the top of the viewport
+  threshold: 0,
+  rootMargin: "-20px 0px 0px 0px" 
+});
+
+if (heroTitle && navLogo) {
+  logoObserver.observe(heroTitle);
+}
 </script>
 </body>
 </html>
