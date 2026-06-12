@@ -8,6 +8,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="project.css">
+<style>
+/* PDF Stage & Book Layout Elements */
+.stage{
+  background:rgba(255,255,255,0.65);
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.8);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.08), 0 1px 1px rgba(255,255,255,0.9) inset;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  margin:5vh auto;
+  max-width:1100px;
+}
+.stage h2{
+  font-size:clamp(20px,2.4vw,28px);font-weight:500;letter-spacing:-0.02em;
+  text-transform:lowercase;align-self:flex-start;
+}
+.page-spread{width:100%;display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
+.page-spread canvas{
+  background:#fff;border-radius:12px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.14);
+  display:block;max-width:100%;height:auto;
+}
+.controls{display:flex;gap:14px;align-items:center}
+.controls button{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;
+  background:none;border:1px solid var(--line);
+  padding:8px 16px;cursor:pointer;border-radius:100px;
+  color:inherit;
+  transition:all 0.3s ease;
+}
+.controls button:hover{border-color:currentColor}
+.indicator{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;opacity:0.6}
+
+@media (max-width:760px){
+  .stage{padding:18px;margin:4vh 5vw}
+}
+</style>
 </head>
 <body>
 
@@ -33,17 +71,30 @@
 
 <div class="p-body">
   <aside class="p-info">
-    <p><!-- replace with your copy --> an editorial study of neue haas grotesk — a book that lets the typeface narrate its own history, proportions, and personality across carefully gridded spreads.</p>
+    <p>an editorial study of neue haas grotesk — a book that lets the typeface narrate its own history, proportions, and personality across carefully gridded spreads.</p>
     <p>restraint is the whole point: white space, precise alignment, and scale shifts do the storytelling, the way the typeface itself would want.</p>
     <div class="meta mono">
       year — 2024<br>
       role — editorial, typography<br>
       category — editorial design
     </div>
-
   </aside>
   <div class="p-media">
       <img class="reveal" src="assets/img/NHG.jpeg" alt="neue haas grotesk book">
+  </div>
+</div>
+
+<!-- Added Book Spreads Container -->
+<div class="stage reveal" id="book-stage">
+  <h2>specimen book spreads</h2>
+  <div class="page-spread" id="book-spread">
+    <canvas id="book-left"></canvas>
+    <canvas id="book-right"></canvas>
+  </div>
+  <div class="controls">
+    <button id="book-prev">‹ prev</button>
+    <div class="indicator" id="book-indicator">page —</div>
+    <button id="book-next">next ›</button>
   </div>
 </div>
 
@@ -58,5 +109,86 @@
 </footer>
 
 <script src="theme.js"></script>
+<!-- Loaded PDF.js External Script Dependency -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+// PDF Configuration path tracking
+const CONFIG = {
+  bookPdf: "assets/pdf/Neue_Book.pdf" // Adjust this path if your file name is different
+};
+
+const refs = name => ({
+  left: document.getElementById(`${name}-left`),
+  right: document.getElementById(`${name}-right`),
+  spread: document.getElementById(`${name}-spread`),
+  indicator: document.getElementById(`${name}-indicator`),
+  prev: document.getElementById(`${name}-prev`),
+  next: document.getElementById(`${name}-next`),
+});
+
+const B = refs("book");
+let bookDoc = null, bookPage = 1;
+
+// Load document parameters
+pdfjsLib.getDocument(CONFIG.bookPdf).promise.then(doc => {
+  bookDoc = doc; 
+  renderBook(B, bookDoc, bookPage);
+}).catch(() => {
+  B.indicator.textContent = "specimen document not found";
+});
+
+function renderPage(doc, pageNum, canvas, targetWidth) {
+  if (!doc || !canvas) return Promise.resolve();
+  return doc.getPage(pageNum).then(page => {
+    const vp1 = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: targetWidth / vp1.width });
+    const ctx = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.width = Math.min(viewport.width, targetWidth) + "px";
+    return page.render({ canvasContext: ctx, viewport }).promise;
+  }).catch(() => {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width || 1, canvas.height || 1);
+  });
+}
+
+function renderBook(R, doc, pageNum) {
+  if (!doc) return;
+  const left = pageNum;
+  const right = (pageNum + 1 <= doc.numPages) ? pageNum + 1 : null;
+  R.right.style.display = right ? "block" : "none";
+  const containerW = Math.min(900, R.spread.offsetWidth || 900);
+  const targetWidth = right ? (containerW / 2 - 14) : Math.min(720, containerW);
+  Promise.all([
+    renderPage(doc, left, R.left, targetWidth),
+    right ? renderPage(doc, right, R.right, targetWidth) : Promise.resolve()
+  ]).then(() => {
+    R.indicator.textContent = right ? `page ${left}–${right}` : `page ${left}`;
+  });
+}
+
+// Navigation event bindings
+B.next.addEventListener("click", () => {
+  if (!bookDoc) return;
+  if (bookPage + 2 <= bookDoc.numPages) bookPage += 2;
+  else if (bookPage < bookDoc.numPages) bookPage = bookDoc.numPages;
+  renderBook(B, bookDoc, bookPage);
+});
+B.prev.addEventListener("click", () => {
+  if (!bookDoc) return;
+  bookPage = Math.max(1, bookPage - 2);
+  renderBook(B, bookDoc, bookPage);
+});
+
+// Window resize handling recalculating canvas layout metrics
+let resizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    renderBook(B, bookDoc, bookPage);
+  }, 160);
+});
+</script>
 </body>
 </html>
