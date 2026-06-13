@@ -193,7 +193,7 @@ nav.pill .cta:hover{transform:scale(1.04);box-shadow:0 0 24px hsl(var(--hue) 75%
 }
 
 /* ---------- section scaffolding ---------- */
-section{padding:13vh 5vw}
+section{padding:10vh 5vw 4vh}
 .section-head{
   display:flex;justify-content:space-between;align-items:baseline;
   border-bottom:1px solid var(--line);
@@ -291,38 +291,80 @@ section{padding:13vh 5vw}
   display:block;
 }
 
-/* ---------- highlighted projects ---------- */
-.hl-label{
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-top:64px;padding-bottom:16px;
-  border-bottom:1px solid var(--line);
-}
-.hl-label .mono{color:var(--grey)}
+/* ---------- highlight / all work layout grids ---------- */
 .hl-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:22px;
-  margin-top:26px;
+  grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+  gap:26px;
+  margin-top:40px;
 }
+
+/* ---------- card individual layout & radiant edge light wrapper ---------- */
+.card-glow-wrapper {
+  position: relative;
+  border-radius: 23px;
+  padding: 1px;
+  background: transparent;
+  transition: transform 0.45s var(--ease);
+}
+.card-glow-wrapper:hover {
+  transform: translateY(-4px);
+}
+
+.card-glow-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  border-radius: 24px;
+  background: transparent;
+  pointer-events: none;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+/* structural behavior matching your favorite premium red cta button */
+.card-glow-wrapper.highlighted-glow::before {
+  box-shadow: 0 0 14px rgba(245, 212, 94, 0.22); /* Subtle yellow anchor glow at rest */
+}
+.card-glow-wrapper.highlighted-glow:hover::before {
+  transform: scale(1.02);
+  box-shadow: 0 0 44px rgba(218, 165, 32, 0.65); /* Massive dynamic flare on hover */
+}
+
+/* rainbow spectrum interactive glow setup for base cards (idle: clean asset boundary) */
+.card-glow-wrapper.rainbow-glow:hover::before {
+  transform: scale(1.02);
+  animation: rainbow-shift 3.5s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  0%   { box-shadow: 0 0 24px rgba(235, 90, 90, 0.45); }
+  17%  { box-shadow: 0 0 24px rgba(240, 185, 90, 0.45); }
+  33%  { box-shadow: 0 0 24px rgba(235, 235, 95, 0.45); }
+  50%  { box-shadow: 0 0 24px rgba(95, 235, 150, 0.45); }
+  67%  { box-shadow: 0 0 24px rgba(90, 180, 240, 0.45); }
+  83%  { box-shadow: 0 0 24px rgba(165, 110, 240, 0.45); }
+  100% { box-shadow: 0 0 24px rgba(235, 90, 90, 0.45); }
+}
+
 .hl-card{
-  display:flex;flex-direction:column;
-  border-radius:22px;overflow:hidden;
-  background:rgba(255,255,255,0.6);
+  position: relative;
+  z-index: 2;
+  display:flex;
+  flex-direction:column;
+  height: 100%;
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.64);
   -webkit-backdrop-filter:blur(22px) saturate(160%);
   backdrop-filter:blur(22px) saturate(160%);
   border:1px solid rgba(255,255,255,0.85);
   box-shadow:
     0 1px 1px rgba(255,255,255,0.9) inset,
-    0 18px 50px rgba(0,0,0,0.08);
-  transition:transform 0.45s var(--ease), box-shadow 0.45s ease;
+    0 14px 40px rgba(0,0,0,0.06);
+  transition: box-shadow 0.45s ease;
 }
-.hl-card:hover{
-  transform:translateY(-5px);
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.9) inset,
-    0 30px 70px rgba(0,0,0,0.12),
-    0 0 50px hsl(var(--hue) 75% 80% / 0.4);
-}
+
 .hl-card .hl-img{
   aspect-ratio:4/3;overflow:hidden;background:#ececea;
 }
@@ -330,13 +372,20 @@ section{padding:13vh 5vw}
   width:100%;height:100%;object-fit:cover;display:block;
   transition:transform 0.8s var(--ease);
 }
-.hl-card:hover .hl-img img{transform:scale(1.04)}
+.card-glow-wrapper:hover .hl-img img {
+  transform:scale(1.03);
+}
+
 .hl-card .hl-body{
-  padding:20px 22px 24px;
-  display:flex;flex-direction:column;gap:6px;
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 .hl-card h4{
-  font-size:18px;font-weight:500;letter-spacing:-0.015em;
+  font-size:17.5px;font-weight:500;letter-spacing:-0.015em;
   text-transform:lowercase;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
@@ -344,77 +393,30 @@ section{padding:13vh 5vw}
   font-size:14px;
   transition:transform 0.35s var(--ease);
 }
-.hl-card:hover h4 span{transform:translate(3px,-3px)}
+.card-glow-wrapper:hover h4 span{
+  transform:translate(3px,-3px);
+}
 .hl-card .hl-tags{
   font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;
   color:var(--grey);text-transform:lowercase;line-height:1.6;
 }
 
-/* ---------- work index ---------- */
-.work{padding-top:6vh}
-.project{
-  display:grid;
-  grid-template-columns:64px 1fr auto auto;
-  align-items:center;gap:32px;
-  padding:30px 8px;
-  border-bottom:1px solid var(--line);
-  cursor:pointer;
-  transition:padding 0.4s var(--ease);
+/* bottom meta-layer to cleanly organize tags and star */
+.card-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
 }
-.project:hover{padding-left:20px}
-.project .idx{color:var(--grey)}
-.project .name{
-  font-size:clamp(20px,2.6vw,34px);
-  font-weight:500;letter-spacing:-0.025em;
-  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
-  text-transform:lowercase;
+.cute-star {
+  font-size: 14px;
+  color: #f1c40f;
+  line-height: 1;
+  user-select: none;
+  text-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
+  transform: translateY(-2px);
 }
-.project .name em{
-  font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
-  color:var(--grey);font-size:0.62em;
-}
-.project .tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.project .tag{
-  font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;
-  padding:5px 11px;border:1px solid var(--line);border-radius:100px;
-  color:rgba(13,13,13,0.65);
-  background:rgba(255,255,255,0.4);
-  transition:border-color 0.3s ease;
-  text-transform:lowercase;
-}
-.project:hover .tag{border-color:rgba(13,13,13,0.35)}
-.project .arrow{
-  width:38px;height:38px;border-radius:50%;
-  border:1px solid var(--line);
-  display:grid;place-items:center;
-  font-size:15px;
-  transition:all 0.35s var(--ease);
-}
-.project:hover .arrow{
-  background:var(--black);color:var(--white);border-color:var(--black);
-  transform:rotate(45deg);
-  box-shadow:0 0 20px hsl(var(--hue) 75% 75% / 0.7);
-}
-
-/* cursor-following glass preview */
-#preview{
-  position:fixed;z-index:90;
-  width:320px;aspect-ratio:4/3;
-  border-radius:18px;
-  pointer-events:none;
-  opacity:0;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.7);
-  box-shadow:0 30px 80px rgba(0,0,0,0.25), 0 1px 1px rgba(255,255,255,0.8) inset;
-  transition:opacity 0.3s ease;
-  background:#ececea;
-}
-#preview.on{opacity:1}
-#preview img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity 0.25s ease;
-}
-#preview img.on{opacity:1}
 
 /* ---------- archive ---------- */
 .archive{padding-top:4vh}
@@ -606,7 +608,7 @@ footer{
 .reveal.in{opacity:1;transform:none}
 
 /* ---------- responsive ---------- */
-@media (max-width:760px){
+@media (max-width:760px) {
   nav.pill .links{display:none}
   .featured {
     grid-template-columns: 1fr;
@@ -617,20 +619,14 @@ footer{
     min-height: 260px;
     order: -1;
   }
-  .project{
-    grid-template-columns:32px 1fr auto;
-    gap:16px;
-    padding:24px 4px;
+  .hl-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
-  .project:hover {
-    padding-left: 4px;
-  }
-  .project .tags{display:none}
   .about .grid{grid-template-columns:1fr}
   .about .photo{max-width:260px}
   .about .cols{grid-template-columns:1fr}
   .about{margin:8vh 10px;padding:10vh 7vw}
-  #preview{display:none}
   .hero{padding-top:14vh;min-height:auto}
 }
 @media (prefers-reduced-motion:reduce){
@@ -644,7 +640,6 @@ footer{
 <div class="page-wrapper">
 
   <div class="bubbles">
-    <!-- orbs anchored to the page — scroll past them. top% = position in document -->
     <div class="orb" style="top:2%;right:-12vmax;width:48vmax;--c:hsl(350 80% 84% / 0.48)"></div>
     <div class="orb" style="top:13%;left:-15vmax;width:44vmax;--c:hsl(18 85% 83% / 0.42)"></div>
     <div class="orb" style="top:27%;left:30%;width:34vmax;--c:hsl(46 78% 82% / 0.36)"></div>
@@ -661,9 +656,9 @@ footer{
   <nav class="pill" id="nav">
     <a class="logo" href="#top"><span class="dot"></span>avelino cortina</a>
     <div class="links">
+      <a href="#current">current</a>
       <a href="#work">work</a>
       <a href="#about">about</a>
-      <a href="assets/pdf/resume-dec25.pdf" target="_blank">resume</a>
     </div>
     <a class="cta" href="mailto:avelinocortinaiv@mac.com">let's talk</a>
   </nav>
@@ -682,14 +677,14 @@ footer{
     </div>
   </header>
 
-  <!-- ░░ work index ░░ -->
-  <section class="work" id="work">
+  <!-- ░░ section: current ░░ -->
+  <section id="current">
     <div class="section-head reveal">
-      <h2>work</h2>
-      <span class="mono">selected projects</span>
+      <h2>current venture</h2>
+      <span class="mono">001 — venture</span>
     </div>
 
-    <!-- ░░ featured: good graces ░░ -->
+    <!-- featured standalone card layout -->
     <a class="featured reveal" href="goodgraces.html">
       <div class="f-info">
         <span class="badge">currently building</span>
@@ -707,106 +702,168 @@ footer{
         <img src="https://goodgraces.app/img/mockup-side2.png" alt="good graces app">
       </div>
     </a>
-
-    <!-- ░░ highlighted ░░ -->
-    <div class="hl-label reveal">
-      <h2 style="font-size:clamp(20px,2.6vw,32px);font-weight:500;letter-spacing:-0.025em;text-transform:lowercase">highlighted</h2>
-      <span class="mono">06 projects</span>
-    </div>
-    <div class="hl-grid">
-      <a class="hl-card reveal" href="ymca.html">
-        <div class="hl-img"><img src="assets/img/Lobby-F3-1.png" alt="ymca trophy case design"></div>
-        <div class="hl-body">
-          <h4>ymca trophy case design <span>➜ </span></h4>
-          <div class="hl-tags">community, architecture, design</div>
-        </div>
-      </a>
-      <a class="hl-card reveal" href="listone.html">
-        <div class="hl-img"><img src="assets/img/listone-hero.png" alt="listone app"></div>
-        <div class="hl-body">
-          <h4>listone <span>➜ </span></h4>
-          <div class="hl-tags">product strategy, ui/ux, saas</div>
-        </div>
-      </a>
-      <a class="hl-card reveal" href="ketchup.html">
-        <div class="hl-img"><img src="assets/img/ketchup-poster.jpg" alt="ketchup app startup"></div>
-        <div class="hl-body">
-          <h4>ketchup app startup <span>➜ </span></h4>
-          <div class="hl-tags">ui ux design, graphic design, branding</div>
-        </div>
-      </a>
-      <a class="hl-card reveal" href="mirroredconfessional.html">
-        <div class="hl-img"><img src="assets/img/1-1.jpg" alt="the mirrored confessional"></div>
-        <div class="hl-body">
-          <h4>the mirrored confessional <span>➜ </span></h4>
-          <div class="hl-tags">experience design, experimental design, audio mixing, book making, publication design</div>
-        </div>
-      </a>
-      <a class="hl-card reveal" href="pigeon.html">
-        <div class="hl-img"><img src="assets/img/pigeonn.png" alt="berkeley pigeon project"></div>
-        <div class="hl-body">
-          <h4>berkeley pigeon project <span>➜ </span></h4>
-          <div class="hl-tags">community, architecture, strategy</div>
-        </div>
-      </a>
-      <a class="hl-card reveal" href="missionbayshuttle.html">
-        <div class="hl-img"><img src="assets/img/mbs_mockup.jpg" alt="mission bay shuttle app design"></div>
-        <div class="hl-body">
-          <h4>mission bay shuttle app design <span>➜ </span></h4>
-          <div class="hl-tags">ui ux design, graphic design, branding</div>
-        </div>
-      </a>
-    </div>
-
-    <div class="hl-label reveal">
-      <h2 style="font-size:clamp(20px,2.6vw,32px);font-weight:500;letter-spacing:-0.025em;text-transform:lowercase">all work</h2>
-      <span class="mono">05 projects</span>
-    </div>
-
-    <a class="project reveal" href="realreal.html" data-slide="0">
-      <span class="idx mono">001</span>
-      <span class="name">the realreal <em>web banners</em></span>
-      <span class="tags"><span class="tag">campaign</span><span class="tag">marketing</span></span>
-      <span class="arrow">➜ </span>
-    </a>
-
-    <a class="project reveal" href="widgetwakeup.html" data-slide="1">
-      <span class="idx mono">002</span>
-      <span class="name">widget wakeup <em>ios concept</em></span>
-      <span class="tags"><span class="tag">ios</span><span class="tag">concept</span></span>
-      <span class="arrow">➜ </span>
-    </a>
-
-    <a class="project reveal" href="tents.html" data-slide="2">
-      <span class="idx mono">003</span>
-      <span class="name">richmond tent encampment <em>community design</em></span>
-      <span class="tags"><span class="tag">architecture</span><span class="tag">social</span></span>
-      <span class="arrow">➜ </span>
-    </a>
-
-    <a class="project reveal" href="mightyleaf.html" data-slide="3">
-      <span class="idx mono">004</span>
-      <span class="name">mighty leaf <em>package redesign</em></span>
-      <span class="tags"><span class="tag">packaging</span><span class="tag">branding</span></span>
-      <span class="arrow">➜ </span>
-    </a>
-
-    <a class="project reveal" href="wallcoffee.html" data-slide="4">
-      <span class="idx mono">005</span>
-      <span class="name">wall-mounted coffee machine <em>product design</em></span>
-      <span class="tags"><span class="tag">industrial</span><span class="tag">concept</span></span>
-      <span class="arrow">➜ </span>
-    </a>
   </section>
 
-  <!-- cursor-following preview -->
-  <div id="preview" aria-hidden="true">
-    <img src="assets/img/realreal.jpg" alt="">
-    <img src="assets/img/wakeup.jpg" alt="">
-    <img src="assets/img/tents.png" alt="">
-    <img src="assets/img/leaf.png" alt="">
-    <img src="assets/img/wallmount.jpeg" alt="">
-  </div>
+  <!-- ░░ section: all work ░░ -->
+  <section class="work" id="work" style="padding-top:4vh">
+    <div class="section-head reveal">
+      <h2>all work</h2>
+      <span class="mono">11 selected projects</span>
+    </div>
+
+    <div class="hl-grid">
+      
+      <!-- project 1: ymca (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="ymca.html">
+          <div class="hl-img"><img src="assets/img/Lobby-F3-1.png" alt="ymca trophy case design"></div>
+          <div class="hl-body">
+            <h4>ymca trophy case design <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">community, architecture, design</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 2: listone (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="listone.html">
+          <div class="hl-img"><img src="assets/img/listone-hero.png" alt="listone app"></div>
+          <div class="hl-body">
+            <h4>listone <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">product strategy, ui/ux, saas</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 3: ketchup (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="ketchup.html">
+          <div class="hl-img"><img src="assets/img/ketchup-poster.jpg" alt="ketchup app startup"></div>
+          <div class="hl-body">
+            <h4>ketchup app startup <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">ui ux design, graphic design, branding</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 4: mirrored confessional (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="mirroredconfessional.html">
+          <div class="hl-img"><img src="assets/img/1-1.jpg" alt="the mirrored confessional"></div>
+          <div class="hl-body">
+            <h4>the mirrored confessional <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">experience design, experimental, publication</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 5: pigeon project (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="pigeon.html">
+          <div class="hl-img"><img src="assets/img/pigeonn.png" alt="berkeley pigeon project"></div>
+          <div class="hl-body">
+            <h4>berkeley pigeon project <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">community, architecture, strategy</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 6: mission bay shuttle (highlighted custom gold halo + star) -->
+      <div class="card-glow-wrapper highlighted-glow reveal">
+        <a class="hl-card" href="missionbayshuttle.html">
+          <div class="hl-img"><img src="assets/img/mbs_mockup.jpg" alt="mission bay shuttle app design"></div>
+          <div class="hl-body">
+            <h4>mission bay shuttle app design <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">ui ux design, graphic design, branding</div>
+              <span class="cute-star">✦</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 7: the realreal (idle: clean / hover: dynamic rainbow profile) -->
+      <div class="card-glow-wrapper rainbow-glow reveal">
+        <a class="hl-card" href="realreal.html">
+          <div class="hl-img"><img src="assets/img/realreal.jpg" alt="the realreal web banners"></div>
+          <div class="hl-body">
+            <h4>the realreal <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">campaign, marketing, web banners</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 8: widget wakeup (idle: clean / hover: dynamic rainbow profile) -->
+      <div class="card-glow-wrapper rainbow-glow reveal">
+        <a class="hl-card" href="widgetwakeup.html">
+          <div class="hl-img"><img src="assets/img/wakeup.jpg" alt="widget wakeup ios concept"></div>
+          <div class="hl-body">
+            <h4>widget wakeup <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">ios, concept, interface study</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 9: richmond tents (idle: clean / hover: dynamic rainbow profile) -->
+      <div class="card-glow-wrapper rainbow-glow reveal">
+        <a class="hl-card" href="tents.html">
+          <div class="hl-img"><img src="assets/img/tents.png" alt="richmond tent encampment community design"></div>
+          <div class="hl-body">
+            <h4>richmond tent encampment <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">architecture, social, infrastructure</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 10: mighty leaf (idle: clean / hover: dynamic rainbow profile) -->
+      <div class="card-glow-wrapper rainbow-glow reveal">
+        <a class="hl-card" href="mightyleaf.html">
+          <div class="hl-img"><img src="assets/img/leaf.png" alt="mighty leaf package redesign"></div>
+          <div class="hl-body">
+            <h4>mighty leaf <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">packaging, branding, system architecture</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- project 11: wallcoffee (idle: clean / hover: dynamic rainbow profile) -->
+      <div class="card-glow-wrapper rainbow-glow reveal">
+        <a class="hl-card" href="wallcoffee.html">
+          <div class="hl-img"><img src="assets/img/wallmount.jpeg" alt="wall-mounted coffee machine product design"></div>
+          <div class="hl-body">
+            <h4>wall-mounted coffee machine <span>➜ </span></h4>
+            <div class="card-bottom-row">
+              <div class="hl-tags">industrial, concept, physical layout</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
 
   <!-- ░░ archive — opens glass popups ░░ -->
   <section class="archive">
@@ -967,29 +1024,6 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, {threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-// ---------- cursor preview ----------
-const preview = document.getElementById('preview');
-const slides = preview.querySelectorAll('img');
-const rows = document.querySelectorAll('.project');
-let px = 0, py = 0, tx = 0, ty = 0, raf = null;
-function loop(){
-  px += (tx - px) * 0.12;
-  py += (ty - py) * 0.12;
-  preview.style.transform = `translate(${px}px, ${py}px)`;
-  raf = requestAnimationFrame(loop);
-}
-rows.forEach(row => {
-  row.addEventListener('mouseenter', e => {
-    slides.forEach(s => s.classList.remove('on'));
-    slides[row.dataset.slide]?.classList.add('on');
-    preview.classList.add('on');
-    if (!raf) { px = tx = e.clientX + 28; py = ty = e.clientY - 120; loop(); }
-  });
-  row.addEventListener('mousemove', e => { tx = e.clientX + 28; ty = e.clientY - 120; });
-  row.addEventListener('mouseleave', () => preview.classList.remove('on'));
-});
-document.addEventListener('mouseleave', () => preview.classList.remove('on'));
 
 // ---------- archive modals ----------
 const overlay = document.getElementById('overlay');
